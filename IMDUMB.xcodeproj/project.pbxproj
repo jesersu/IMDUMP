@@ -11,6 +11,17 @@
 		A10000003 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000002 /* SceneDelegate.swift */; };
 		A10000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000007 /* Assets.xcassets */; };
 		A1000000B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A10000009 /* LaunchScreen.storyboard */; };
+		A10000020 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001F /* Movie.swift */; };
+		A10000022 /* ConfigRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000021 /* ConfigRepositoryProtocol.swift */; };
+		A10000024 /* MovieRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000023 /* MovieRepositoryProtocol.swift */; };
+		A10000026 /* GetCategoriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000025 /* GetCategoriesUseCase.swift */; };
+		A10000028 /* GetMovieDetailsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000027 /* GetMovieDetailsUseCase.swift */; };
+		A1000002A /* LoadConfigurationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000029 /* LoadConfigurationUseCase.swift */; };
+		A1000002C /* MovieDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002B /* MovieDTO.swift */; };
+		A1000002E /* MovieDataStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002D /* MovieDataStoreProtocol.swift */; };
+		A10000030 /* ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002F /* ViewProtocol.swift */; };
+		A10000032 /* UIViewController+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000031 /* UIViewController+Loading.swift */; };
+		A10000034 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000033 /* String+HTML.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +31,17 @@
 		A10000007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000000A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1000000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1000001F /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		A10000021 /* ConfigRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigRepositoryProtocol.swift; sourceTree = "<group>"; };
+		A10000023 /* MovieRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepositoryProtocol.swift; sourceTree = "<group>"; };
+		A10000025 /* GetCategoriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCategoriesUseCase.swift; sourceTree = "<group>"; };
+		A10000027 /* GetMovieDetailsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetMovieDetailsUseCase.swift; sourceTree = "<group>"; };
+		A10000029 /* LoadConfigurationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadConfigurationUseCase.swift; sourceTree = "<group>"; };
+		A1000002B /* MovieDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDTO.swift; sourceTree = "<group>"; };
+		A1000002D /* MovieDataStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDataStoreProtocol.swift; sourceTree = "<group>"; };
+		A1000002F /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
+		A10000031 /* UIViewController+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loading.swift"; sourceTree = "<group>"; };
+		A10000033 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,22 +96,89 @@
 		A10000013 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				A10000017 /* Entities */,
+				A10000018 /* Repositories */,
+				A10000019 /* UseCases */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		A10000017 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A1000001F /* Movie.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A10000018 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				A10000021 /* ConfigRepositoryProtocol.swift */,
+				A10000023 /* MovieRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A10000019 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				A10000025 /* GetCategoriesUseCase.swift */,
+				A10000027 /* GetMovieDetailsUseCase.swift */,
+				A10000029 /* LoadConfigurationUseCase.swift */,
+			);
+			path = UseCases;
 			sourceTree = "<group>";
 		};
 		A10000014 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				A1000001A /* DTOs */,
+				A1000001B /* DataStores */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		A1000001A /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002B /* MovieDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		A1000001B /* DataStores */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002D /* MovieDataStoreProtocol.swift */,
+			);
+			path = DataStores;
 			sourceTree = "<group>";
 		};
 		A10000015 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A1000001C /* Protocols */,
+				A1000001D /* Extensions */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		A1000001C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002F /* ViewProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A1000001D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A10000031 /* UIViewController+Loading.swift */,
+				A10000033 /* String+HTML.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		A10000016 /* Resources */ = {
@@ -177,6 +266,17 @@
 			files = (
 				A10000001 /* AppDelegate.swift in Sources */,
 				A10000003 /* SceneDelegate.swift in Sources */,
+				A10000020 /* Movie.swift in Sources */,
+				A10000022 /* ConfigRepositoryProtocol.swift in Sources */,
+				A10000024 /* MovieRepositoryProtocol.swift in Sources */,
+				A10000026 /* GetCategoriesUseCase.swift in Sources */,
+				A10000028 /* GetMovieDetailsUseCase.swift in Sources */,
+				A1000002A /* LoadConfigurationUseCase.swift in Sources */,
+				A1000002C /* MovieDTO.swift in Sources */,
+				A1000002E /* MovieDataStoreProtocol.swift in Sources */,
+				A10000030 /* ViewProtocol.swift in Sources */,
+				A10000032 /* UIViewController+Loading.swift in Sources */,
+				A10000034 /* String+HTML.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
