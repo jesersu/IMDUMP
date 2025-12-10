@@ -1,6 +1,13 @@
 # IMDUMB - iOS Movie Database App
 
-IMDUMB is an iOS application that displays movie categories and details, built with **MVP + Clean Architecture** pattern. The app demonstrates professional iOS development practices including proper separation of concerns, SOLID principles, and UIKit with XIB-based interface design.
+IMDUMB is an iOS application that displays movie categories and details, built with **MVP + Clean Architecture** pattern. The app demonstrates professional iOS development practices including proper separation of concerns, SOLID principles, UIKit with XIB-based interface design, and **encrypted secrets management with Arkana**.
+
+## 🔐 Security Features
+
+- **Arkana Integration** - API keys and sensitive data are encrypted using Arkana
+- **Environment-based Configuration** - Different settings for Debug/Release builds
+- **Type-Safe Secrets** - Compile-time safety when accessing encrypted keys
+- See [ARKANA_SETUP.md](ARKANA_SETUP.md) for detailed setup instructions
 
 ## 📱 Features
 
@@ -109,6 +116,7 @@ The codebase demonstrates SOLID principles throughout:
 
 Dependencies are managed via Swift Package Manager:
 
+- **Arkana** - Secrets encryption and management (Ruby gem)
 - **Firebase iOS SDK** (planned - for Remote Config/Database)
 - **Alamofire** (planned - for advanced networking)
 
@@ -119,6 +127,7 @@ Dependencies are managed via Swift Package Manager:
 - Xcode 16.0 or later
 - macOS with iOS development tools
 - Git
+- Ruby (for Arkana - comes with macOS)
 
 ### Steps
 
@@ -128,17 +137,28 @@ Dependencies are managed via Swift Package Manager:
    cd IMDUMB
    ```
 
-2. **Open the project**
+2. **Install Arkana** (for encrypted secrets)
    ```bash
-   open IMDUMB.xcodeproj
+   gem install arkana
    ```
 
-3. **Configure API Key** (for production use)
-   - Open `IMDUMB/Core/Network/NetworkService.swift`
-   - Replace `YOUR_API_KEY_HERE` with your TMDB API key
-   ```swift
-   init(baseURL: String = "https://api.themoviedb.org/3",
-        apiKey: String = "YOUR_TMDB_API_KEY")
+3. **Configure API Keys** (Recommended - Use Arkana)
+   ```bash
+   # Copy the sample environment file
+   cp .env.sample .env
+
+   # Edit .env and add your TMDB API key
+   # Get your key from: https://www.themoviedb.org/settings/api
+
+   # Generate encrypted secrets
+   arkana -e .env
+   ```
+
+   See [ARKANA_SETUP.md](ARKANA_SETUP.md) for detailed instructions.
+
+4. **Open the project**
+   ```bash
+   open IMDUMB.xcodeproj
    ```
 
 4. **Configure Firebase** (optional)

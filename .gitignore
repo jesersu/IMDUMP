@@ -19,3 +19,10 @@ Pods/
 .swiftpm
 *.resolved
 GoogleService-Info.plist
+
+# Arkana - Encrypted secrets
+.env
+.env.debug
+.env.release
+.arkana/
+ArkanaKeys/

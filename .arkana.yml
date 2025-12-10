@@ -1,0 +1,15 @@
+# Arkana Configuration
+# Encrypts sensitive information like API keys
+
+namespace: ArkanaKeys
+package_manager: spm
+
+# Global secrets (same across all environments)
+global_secrets:
+  - TMDBAPIKey
+  - FirebaseAPIKey
+  - APIBaseURL
+
+# Import settings
+import_name: IMDUMB
+should_generate_unit_tests: false

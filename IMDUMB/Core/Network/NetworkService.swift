@@ -47,16 +47,17 @@ enum NetworkError: Error {
 
 // MARK: - Network Service Implementation
 // This will be replaced with Alamofire implementation
+// SOLID: Uses SecretsManager for encrypted API keys
 class NetworkService: NetworkServiceProtocol {
     static let shared = NetworkService()
 
     private let baseURL: String
     private let apiKey: String
 
-    init(baseURL: String = "https://api.themoviedb.org/3",
-         apiKey: String = "YOUR_API_KEY_HERE") {
-        self.baseURL = baseURL
-        self.apiKey = apiKey
+    init(baseURL: String? = nil, apiKey: String? = nil) {
+        // Use Arkana-encrypted secrets from SecretsManager
+        self.baseURL = baseURL ?? SecretsManager.shared.apiBaseURL
+        self.apiKey = apiKey ?? SecretsManager.shared.tmdbAPIKey
     }
 
     func request<T: Decodable>(
