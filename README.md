@@ -108,7 +108,7 @@ The codebase demonstrates SOLID principles throughout:
 - **Minimum iOS Version**: 15.0
 - **UI Framework**: UIKit with XIB files (no SwiftUI, no programmatic views)
 - **Architecture**: MVP + Clean Architecture
-- **Networking**: URLSession (prepared for Alamofire integration)
+- **Networking**: Alamofire 5.9.1 for HTTP requests and image loading
 - **Dependency Management**: Swift Package Manager (SPM)
 - **Firebase**: Firebase Remote Config / Realtime Database (for configuration)
 
@@ -117,8 +117,8 @@ The codebase demonstrates SOLID principles throughout:
 Dependencies are managed via Swift Package Manager:
 
 - **Arkana** - Secrets encryption and management (Ruby gem)
-- **Firebase iOS SDK** (planned - for Remote Config/Database)
-- **Alamofire** (planned - for advanced networking)
+- **Alamofire 5.9.1** - HTTP networking and async image loading
+- **Firebase iOS SDK** (optional - for Remote Config/Database)
 
 ## 🚀 Installation & Setup
 
