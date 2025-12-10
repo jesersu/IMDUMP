@@ -46,6 +46,7 @@
 		A10000060 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1000005F /* MovieDetailViewController.xib */; };
 		A10000062 /* RecommendationModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000061 /* RecommendationModalViewController.swift */; };
 		A10000064 /* RecommendationModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000063 /* RecommendationModalViewController.xib */; };
+		A10000066 /* SecretsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000065 /* SecretsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +91,7 @@
 		A1000005F /* MovieDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
 		A10000061 /* RecommendationModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationModalViewController.swift; sourceTree = "<group>"; };
 		A10000063 /* RecommendationModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationModalViewController.xib; sourceTree = "<group>"; };
+		A10000065 /* SecretsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +274,7 @@
 				A1000001C /* Protocols */,
 				A1000001D /* Extensions */,
 				A1000006A /* Network */,
+				A1000006B /* Config */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -308,6 +311,14 @@
 				A10000009 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		A1000006B /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A10000065 /* SecretsManager.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,6 +432,7 @@
 				A1000005C /* MovieDetailPresenter.swift in Sources */,
 				A1000005E /* MovieDetailViewController.swift in Sources */,
 				A10000062 /* RecommendationModalViewController.swift in Sources */,
+				A10000066 /* SecretsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
