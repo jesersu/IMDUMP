@@ -1,4 +1,5 @@
 import Foundation
+import Alamofire
 
 // MARK: - Network Service Protocol
 // SOLID: Interface Segregation Principle - Clean interface for network operations
@@ -16,6 +17,16 @@ enum HTTPMethod: String {
     case post = "POST"
     case put = "PUT"
     case delete = "DELETE"
+
+    // Convert to Alamofire HTTPMethod
+    var alamofireMethod: Alamofire.HTTPMethod {
+        switch self {
+        case .get: return .get
+        case .post: return .post
+        case .put: return .put
+        case .delete: return .delete
+        }
+    }
 }
 
 // MARK: - Network Errors
@@ -45,14 +56,14 @@ enum NetworkError: Error {
     }
 }
 
-// MARK: - Network Service Implementation
-// This will be replaced with Alamofire implementation
+// MARK: - Network Service Implementation with Alamofire
 // SOLID: Ready to use SecretsManager for encrypted API keys
 class NetworkService: NetworkServiceProtocol {
     static let shared = NetworkService()
 
     private let baseURL: String
     private let apiKey: String
+    private let session: Session
 
     init(baseURL: String? = nil, apiKey: String? = nil) {
         // When SecretsManager is added to Xcode project, use:
@@ -61,6 +72,12 @@ class NetworkService: NetworkServiceProtocol {
 
         self.baseURL = baseURL ?? "https://api.themoviedb.org/3"
         self.apiKey = apiKey ?? ProcessInfo.processInfo.environment["TMDB_API_KEY"] ?? "YOUR_API_KEY_HERE"
+
+        // Configure Alamofire session
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 60
+        self.session = Session(configuration: configuration)
     }
 
     func request<T: Decodable>(
@@ -69,59 +86,38 @@ class NetworkService: NetworkServiceProtocol {
         parameters: [String: Any]?,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
-        guard var urlComponents = URLComponents(string: baseURL + endpoint) else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
+        let url = baseURL + endpoint
 
-        // Add API key and other parameters
-        var queryItems = [URLQueryItem(name: "api_key", value: apiKey)]
-        if let parameters = parameters {
-            for (key, value) in parameters {
-                queryItems.append(URLQueryItem(name: key, value: "\(value)"))
+        // Prepare parameters with API key
+        var allParameters = parameters ?? [:]
+        allParameters["api_key"] = apiKey
+
+        // Make request using Alamofire
+        session.request(
+            url,
+            method: method.alamofireMethod,
+            parameters: allParameters,
+            encoding: URLEncoding.default
+        )
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let value):
+                completion(.success(value))
+
+            case .failure(let error):
+                // Handle different types of errors
+                if let statusCode = response.response?.statusCode {
+                    completion(.failure(NetworkError.serverError(statusCode)))
+                } else if error.isResponseSerializationError {
+                    print("Decoding error: \(error)")
+                    completion(.failure(NetworkError.decodingError))
+                } else if error.isSessionTaskError {
+                    completion(.failure(error))
+                } else {
+                    completion(.failure(NetworkError.unknown))
+                }
             }
         }
-        urlComponents.queryItems = queryItems
-
-        guard let url = urlComponents.url else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(NetworkError.invalidResponse))
-                return
-            }
-
-            guard (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NetworkError.serverError(httpResponse.statusCode)))
-                return
-            }
-
-            guard let data = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-
-            do {
-                let decodedData = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decodedData))
-            } catch {
-                print("Decoding error: \(error)")
-                completion(.failure(NetworkError.decodingError))
-            }
-        }
-
-        task.resume()
     }
 }

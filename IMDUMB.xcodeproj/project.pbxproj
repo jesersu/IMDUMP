@@ -23,6 +23,7 @@
 		A10000032 /* UIViewController+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000031 /* UIViewController+Loading.swift */; };
 		A10000034 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000033 /* String+HTML.swift */; };
 		A10000036 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000035 /* NetworkService.swift */; };
+		A1000006F /* UIImageView+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000070 /* UIImageView+Alamofire.swift */; };
 		A10000038 /* RemoteMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000037 /* RemoteMovieDataStore.swift */; };
 		A1000003A /* MockMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000039 /* MockMovieDataStore.swift */; };
 		A1000003C /* FirebaseConfigDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003B /* FirebaseConfigDataStore.swift */; };
@@ -46,6 +47,7 @@
 		A10000060 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1000005F /* MovieDetailViewController.xib */; };
 		A10000062 /* RecommendationModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000061 /* RecommendationModalViewController.swift */; };
 		A10000064 /* RecommendationModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000063 /* RecommendationModalViewController.xib */; };
+		A1000006C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A1000006D /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,7 @@
 		A1000002F /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
 		A10000031 /* UIViewController+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loading.swift"; sourceTree = "<group>"; };
 		A10000033 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
+		A10000070 /* UIImageView+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Alamofire.swift"; sourceTree = "<group>"; };
 		A10000035 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		A10000037 /* RemoteMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteMovieDataStore.swift; sourceTree = "<group>"; };
 		A10000039 /* MockMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDataStore.swift; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000006C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +301,7 @@
 			children = (
 				A10000031 /* UIViewController+Loading.swift */,
 				A10000033 /* String+HTML.swift */,
+				A10000070 /* UIImageView+Alamofire.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -327,6 +332,7 @@
 			);
 			name = IMDUMB;
 			packageProductDependencies = (
+				A1000006D /* Alamofire */,
 			);
 			productName = IMDUMB;
 			productReference = A00000FFD /* IMDUMB.app */;
@@ -357,6 +363,7 @@
 			);
 			mainGroup = A00000FF4;
 			packageReferences = (
+				A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = A00000FFE /* Products */;
 			projectDirPath = "";
@@ -403,6 +410,7 @@
 				A10000030 /* ViewProtocol.swift in Sources */,
 				A10000032 /* UIViewController+Loading.swift in Sources */,
 				A10000034 /* String+HTML.swift in Sources */,
+				A1000006F /* UIImageView+Alamofire.swift in Sources */,
 				A10000036 /* NetworkService.swift in Sources */,
 				A10000038 /* RemoteMovieDataStore.swift in Sources */,
 				A1000003A /* MockMovieDataStore.swift in Sources */,
@@ -643,6 +651,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1000006D /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A00000FF5 /* Project object */;
 }

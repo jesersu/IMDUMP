@@ -106,7 +106,7 @@ class MovieDetailViewController: UIViewController {
 
             let imageURL = URL(string: "https://image.tmdb.org/t/p/w780\(imagePath)")
             if let url = imageURL {
-                loadImage(from: url, into: imageView)
+                imageView.loadImage(from: url)
             }
 
             carouselScrollView.addSubview(imageView)
@@ -116,15 +116,6 @@ class MovieDetailViewController: UIViewController {
             width: imageWidth * CGFloat(imagePaths.count),
             height: imageHeight
         )
-    }
-
-    private func loadImage(from url: URL, into imageView: UIImageView) {
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data, let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async {
-                imageView.image = image
-            }
-        }.resume()
     }
 
     @objc private func recommendTapped() {
@@ -261,12 +252,7 @@ class ActorCollectionViewCell: UICollectionViewCell {
         characterLabel.text = actor.character
 
         if let url = actor.profileURL {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                guard let data = data, let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    self?.profileImageView.image = image
-                }
-            }.resume()
+            profileImageView.loadImage(from: url)
         }
     }
 }

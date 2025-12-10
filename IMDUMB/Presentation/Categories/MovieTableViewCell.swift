@@ -44,21 +44,12 @@ class MovieTableViewCell: UITableViewCell {
         overviewLabel.text = movie.overview
         ratingLabel.text = "⭐ \(String(format: "%.1f", movie.voteAverage))"
 
-        // Load image
+        // Load image using Alamofire extension
         if let url = movie.posterURL {
-            loadImage(from: url)
+            posterImageView.loadImage(from: url)
         } else {
             posterImageView.image = nil
         }
-    }
-
-    private func loadImage(from url: URL) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-            guard let data = data, let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async {
-                self?.posterImageView.image = image
-            }
-        }.resume()
     }
 
     override func prepareForReuse() {
