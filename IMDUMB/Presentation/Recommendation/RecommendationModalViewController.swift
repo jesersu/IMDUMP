@@ -110,7 +110,7 @@ class RecommendationModalViewController: UIViewController {
 
         let keyboardHeight = keyboardFrame.height
         scrollView.contentInset.bottom = keyboardHeight
-        scrollView.scrollIndicatorInsets.bottom = keyboardHeight
+        scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
 
         // Scroll to show the active text view
         if commentTextView.isFirstResponder {
@@ -121,7 +121,7 @@ class RecommendationModalViewController: UIViewController {
 
     @objc private func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset.bottom = 0
-        scrollView.scrollIndicatorInsets.bottom = 0
+        scrollView.verticalScrollIndicatorInsets.bottom = 0
     }
 
     @objc private func confirmTapped() {
