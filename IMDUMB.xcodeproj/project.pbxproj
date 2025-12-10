@@ -22,6 +22,30 @@
 		A10000030 /* ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002F /* ViewProtocol.swift */; };
 		A10000032 /* UIViewController+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000031 /* UIViewController+Loading.swift */; };
 		A10000034 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000033 /* String+HTML.swift */; };
+		A10000036 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000035 /* NetworkService.swift */; };
+		A10000038 /* RemoteMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000037 /* RemoteMovieDataStore.swift */; };
+		A1000003A /* MockMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000039 /* MockMovieDataStore.swift */; };
+		A1000003C /* FirebaseConfigDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003B /* FirebaseConfigDataStore.swift */; };
+		A1000003E /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003D /* MovieRepository.swift */; };
+		A10000040 /* ConfigRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003F /* ConfigRepository.swift */; };
+		A10000042 /* SplashContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000041 /* SplashContract.swift */; };
+		A10000044 /* SplashPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000043 /* SplashPresenter.swift */; };
+		A10000046 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000045 /* SplashViewController.swift */; };
+		A10000048 /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000047 /* SplashViewController.xib */; };
+		A1000004A /* CategoriesContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000049 /* CategoriesContract.swift */; };
+		A1000004C /* CategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004B /* CategoriesPresenter.swift */; };
+		A1000004E /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004D /* CategoriesViewController.swift */; };
+		A10000050 /* CategoriesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1000004F /* CategoriesViewController.xib */; };
+		A10000052 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000051 /* CategoryCollectionViewCell.swift */; };
+		A10000054 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000053 /* CategoryCollectionViewCell.xib */; };
+		A10000056 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000055 /* MovieTableViewCell.swift */; };
+		A10000058 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000057 /* MovieTableViewCell.xib */; };
+		A1000005A /* MovieDetailContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000059 /* MovieDetailContract.swift */; };
+		A1000005C /* MovieDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005B /* MovieDetailPresenter.swift */; };
+		A1000005E /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005D /* MovieDetailViewController.swift */; };
+		A10000060 /* MovieDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1000005F /* MovieDetailViewController.xib */; };
+		A10000062 /* RecommendationModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000061 /* RecommendationModalViewController.swift */; };
+		A10000064 /* RecommendationModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000063 /* RecommendationModalViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +66,30 @@
 		A1000002F /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
 		A10000031 /* UIViewController+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loading.swift"; sourceTree = "<group>"; };
 		A10000033 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
+		A10000035 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		A10000037 /* RemoteMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteMovieDataStore.swift; sourceTree = "<group>"; };
+		A10000039 /* MockMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDataStore.swift; sourceTree = "<group>"; };
+		A1000003B /* FirebaseConfigDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfigDataStore.swift; sourceTree = "<group>"; };
+		A1000003D /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
+		A1000003F /* ConfigRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigRepository.swift; sourceTree = "<group>"; };
+		A10000041 /* SplashContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashContract.swift; sourceTree = "<group>"; };
+		A10000043 /* SplashPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashPresenter.swift; sourceTree = "<group>"; };
+		A10000045 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		A10000047 /* SplashViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SplashViewController.xib; sourceTree = "<group>"; };
+		A10000049 /* CategoriesContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesContract.swift; sourceTree = "<group>"; };
+		A1000004B /* CategoriesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesPresenter.swift; sourceTree = "<group>"; };
+		A1000004D /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
+		A1000004F /* CategoriesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoriesViewController.xib; sourceTree = "<group>"; };
+		A10000051 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		A10000053 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		A10000055 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
+		A10000057 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
+		A10000059 /* MovieDetailContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailContract.swift; sourceTree = "<group>"; };
+		A1000005B /* MovieDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailPresenter.swift; sourceTree = "<group>"; };
+		A1000005D /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
+		A1000005F /* MovieDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
+		A10000061 /* RecommendationModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationModalViewController.swift; sourceTree = "<group>"; };
+		A10000063 /* RecommendationModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationModalViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +137,58 @@
 		A10000012 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A10000065 /* Splash */,
+				A10000066 /* Categories */,
+				A10000067 /* MovieDetail */,
+				A10000068 /* Recommendation */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		A10000065 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				A10000041 /* SplashContract.swift */,
+				A10000043 /* SplashPresenter.swift */,
+				A10000045 /* SplashViewController.swift */,
+				A10000047 /* SplashViewController.xib */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
+		A10000066 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A10000049 /* CategoriesContract.swift */,
+				A1000004B /* CategoriesPresenter.swift */,
+				A1000004D /* CategoriesViewController.swift */,
+				A1000004F /* CategoriesViewController.xib */,
+				A10000051 /* CategoryCollectionViewCell.swift */,
+				A10000053 /* CategoryCollectionViewCell.xib */,
+				A10000055 /* MovieTableViewCell.swift */,
+				A10000057 /* MovieTableViewCell.xib */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		A10000067 /* MovieDetail */ = {
+			isa = PBXGroup;
+			children = (
+				A10000059 /* MovieDetailContract.swift */,
+				A1000005B /* MovieDetailPresenter.swift */,
+				A1000005D /* MovieDetailViewController.swift */,
+				A1000005F /* MovieDetailViewController.xib */,
+			);
+			path = MovieDetail;
+			sourceTree = "<group>";
+		};
+		A10000068 /* Recommendation */ = {
+			isa = PBXGroup;
+			children = (
+				A10000061 /* RecommendationModalViewController.swift */,
+				A10000063 /* RecommendationModalViewController.xib */,
+			);
+			path = Recommendation;
 			sourceTree = "<group>";
 		};
 		A10000013 /* Domain */ = {
@@ -135,8 +233,18 @@
 			children = (
 				A1000001A /* DTOs */,
 				A1000001B /* DataStores */,
+				A10000069 /* Repositories */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		A10000069 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				A1000003D /* MovieRepository.swift */,
+				A1000003F /* ConfigRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		A1000001A /* DTOs */ = {
@@ -151,6 +259,9 @@
 			isa = PBXGroup;
 			children = (
 				A1000002D /* MovieDataStoreProtocol.swift */,
+				A10000037 /* RemoteMovieDataStore.swift */,
+				A10000039 /* MockMovieDataStore.swift */,
+				A1000003B /* FirebaseConfigDataStore.swift */,
 			);
 			path = DataStores;
 			sourceTree = "<group>";
@@ -160,8 +271,17 @@
 			children = (
 				A1000001C /* Protocols */,
 				A1000001D /* Extensions */,
+				A1000006A /* Network */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		A1000006A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A10000035 /* NetworkService.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		A1000001C /* Protocols */ = {
@@ -254,6 +374,12 @@
 			files = (
 				A10000008 /* Assets.xcassets in Resources */,
 				A1000000B /* LaunchScreen.storyboard in Resources */,
+				A10000048 /* SplashViewController.xib in Resources */,
+				A10000050 /* CategoriesViewController.xib in Resources */,
+				A10000054 /* CategoryCollectionViewCell.xib in Resources */,
+				A10000058 /* MovieTableViewCell.xib in Resources */,
+				A10000060 /* MovieDetailViewController.xib in Resources */,
+				A10000064 /* RecommendationModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +403,24 @@
 				A10000030 /* ViewProtocol.swift in Sources */,
 				A10000032 /* UIViewController+Loading.swift in Sources */,
 				A10000034 /* String+HTML.swift in Sources */,
+				A10000036 /* NetworkService.swift in Sources */,
+				A10000038 /* RemoteMovieDataStore.swift in Sources */,
+				A1000003A /* MockMovieDataStore.swift in Sources */,
+				A1000003C /* FirebaseConfigDataStore.swift in Sources */,
+				A1000003E /* MovieRepository.swift in Sources */,
+				A10000040 /* ConfigRepository.swift in Sources */,
+				A10000042 /* SplashContract.swift in Sources */,
+				A10000044 /* SplashPresenter.swift in Sources */,
+				A10000046 /* SplashViewController.swift in Sources */,
+				A1000004A /* CategoriesContract.swift in Sources */,
+				A1000004C /* CategoriesPresenter.swift in Sources */,
+				A1000004E /* CategoriesViewController.swift in Sources */,
+				A10000052 /* CategoryCollectionViewCell.swift in Sources */,
+				A10000056 /* MovieTableViewCell.swift in Sources */,
+				A1000005A /* MovieDetailContract.swift in Sources */,
+				A1000005C /* MovieDetailPresenter.swift in Sources */,
+				A1000005E /* MovieDetailViewController.swift in Sources */,
+				A10000062 /* RecommendationModalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
