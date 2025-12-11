@@ -4,9 +4,9 @@ import XCTest
 // MARK: - Mock Repository for Testing
 class MockMovieRepository: MovieRepositoryProtocol {
     var shouldReturnError = false
-    var mockCategories: [Category] = []
+    var mockCategories: [IMDUMB.Category] = []
 
-    func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
+    func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NSError(domain: "TestError", code: 1, userInfo: nil)))
         } else {

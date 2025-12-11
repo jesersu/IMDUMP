@@ -8,9 +8,9 @@ class MockCategoriesView: CategoriesViewProtocol {
     var hideLoadingCalled = false
     var showErrorCalled = false
     var errorMessage: String?
-    var displayedCategories: [Category]?
+    var displayedCategories: [IMDUMB.Category]?
 
-    func displayCategories(_ categories: [Category]) {
+    func displayCategories(_ categories: [IMDUMB.Category]) {
         displayCategoriesCalled = true
         displayedCategories = categories
     }
@@ -30,11 +30,11 @@ class MockCategoriesView: CategoriesViewProtocol {
 }
 
 // MARK: - Mock Use Case for Presenter Tests
-class MockGetCategoriesUseCase: GetCategoriesUseCaseProtocol {
+class MockGetCategoriesUseCase {
     var shouldReturnError = false
-    var mockCategories: [Category] = []
+    var mockCategories: [IMDUMB.Category] = []
 
-    func execute(completion: @escaping (Result<[Category], Error>) -> Void) {
+    func execute(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NSError(domain: "UseCaseError", code: 1, userInfo: nil)))
         } else {

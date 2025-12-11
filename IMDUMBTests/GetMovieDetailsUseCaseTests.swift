@@ -6,7 +6,7 @@ class MockMovieDetailsRepository: MovieRepositoryProtocol {
     var shouldReturnError = false
     var mockMovie: Movie?
 
-    func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
+    func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
         completion(.failure(NSError(domain: "NotImplemented", code: 1, userInfo: nil)))
     }
 
