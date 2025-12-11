@@ -219,11 +219,38 @@ https://api.themoviedb.org/3
 
 ## 🧪 Testing
 
+### DataStore Implementations
+
 The app includes multiple DataStore implementations for testing:
 
 - **MockMovieDataStore**: Provides sample data without network calls
 - **RemoteMovieDataStore**: Fetches data from TMDB API
 - **LocalDataStore**: (Future) For offline caching with CoreData/Realm
+
+### Unit Tests
+
+The project includes comprehensive unit tests covering core components:
+
+**Test Coverage:**
+- ✅ **Use Cases** (8 tests): GetCategoriesUseCase, GetMovieDetailsUseCase
+- ✅ **Repositories** (4 tests): MovieRepository DTO mapping and error handling
+- ✅ **Presenters** (4 tests): CategoriesPresenter view lifecycle and state management
+- ✅ **DataStores** (8 tests): MockMovieDataStore data quality validation
+- ✅ **Extensions** (10 tests): String+HTML parsing and edge cases
+
+**Total: 34 unit tests**
+
+**Running Tests:**
+
+1. In Xcode: Press `Cmd + U`
+2. Command line:
+   ```bash
+   xcodebuild test -project IMDUMB.xcodeproj -scheme IMDUMB -destination 'platform=iOS Simulator,name=iPhone 15'
+   ```
+
+**Test Files Location:** `IMDUMBTests/`
+
+**Note:** To run tests in Xcode, you need to add the IMDUMBTests target to the project first (test files are included in the repository).
 
 ## 📖 Project Structure Details
 
