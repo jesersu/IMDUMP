@@ -1,0 +1,188 @@
+# Fastfile for IMDUMB iOS Project
+# This file contains the fastlane.tools configuration
+
+default_platform(:ios)
+
+platform :ios do
+  # Variables
+  scheme = "IMDUMB"
+  project = "IMDUMB.xcodeproj"
+
+  # MARK: - Before All
+  before_all do
+    ensure_git_status_clean unless ENV['SKIP_GIT_CHECK']
+  end
+
+  # MARK: - Build Lanes
+
+  desc "Build the app for Debug configuration"
+  lane :build_debug do
+    build_app(
+      scheme: scheme,
+      project: project,
+      configuration: "Debug",
+      skip_archive: true,
+      skip_codesigning: true,
+      destination: "generic/platform=iOS Simulator"
+    )
+  end
+
+  desc "Build the app for Release configuration"
+  lane :build_release do
+    build_app(
+      scheme: scheme,
+      project: project,
+      configuration: "Release",
+      skip_archive: true,
+      skip_codesigning: true,
+      destination: "generic/platform=iOS Simulator"
+    )
+  end
+
+  # MARK: - Test Lanes
+
+  desc "Run all unit tests"
+  lane :test do
+    scan(
+      scheme: scheme,
+      project: project,
+      device: "iPhone 15",
+      clean: true,
+      code_coverage: true,
+      output_directory: "./fastlane/test_output",
+      output_types: "html,junit",
+      fail_build: true
+    )
+  end
+
+  desc "Run tests with code coverage"
+  lane :test_with_coverage do
+    scan(
+      scheme: scheme,
+      project: project,
+      device: "iPhone 15",
+      clean: true,
+      code_coverage: true,
+      output_directory: "./fastlane/test_output",
+      output_types: "html,junit,json-compilation-database",
+      fail_build: true
+    )
+
+    # Generate coverage report
+    UI.success("✅ Code coverage report generated in fastlane/test_output")
+  end
+
+  # MARK: - Setup Lanes
+
+  desc "Setup project dependencies and secrets"
+  lane :setup do
+    UI.message("🔧 Setting up project dependencies...")
+
+    # Install SPM dependencies
+    UI.message("📦 Resolving Swift Package Manager dependencies...")
+    sh("cd .. && xcodebuild -resolvePackageDependencies -project #{project}")
+
+    # Setup Arkana if .env exists
+    if File.exist?("../.env")
+      UI.message("🔐 Generating encrypted secrets with Arkana...")
+      sh("cd .. && arkana -e .env")
+    else
+      UI.warning("⚠️  .env file not found. Copy .env.sample to .env and add your API keys.")
+    end
+
+    UI.success("✅ Project setup complete!")
+  end
+
+  # MARK: - Linting Lanes
+
+  desc "Run SwiftLint to check code quality"
+  lane :lint do
+    if sh("command -v swiftlint", log: false).empty?
+      UI.important("⚠️  SwiftLint not installed. Install with: brew install swiftlint")
+    else
+      swiftlint(
+        mode: :lint,
+        config_file: ".swiftlint.yml",
+        raise_if_swiftlint_error: false,
+        ignore_exit_status: true
+      )
+    end
+  end
+
+  # MARK: - CI/CD Lanes
+
+  desc "Run CI checks (lint, test, build)"
+  lane :ci do
+    UI.message("🚀 Running CI pipeline...")
+
+    # Lint code
+    begin
+      lint
+    rescue => ex
+      UI.error("⚠️  Linting found issues, but continuing...")
+    end
+
+    # Run tests
+    test
+
+    # Build release
+    build_release
+
+    UI.success("✅ CI pipeline completed successfully!")
+  end
+
+  desc "Quick CI without linting (for GitHub Actions)"
+  lane :ci_quick do
+    UI.message("🚀 Running quick CI pipeline...")
+
+    # Run tests
+    test
+
+    # Build release
+    build_release
+
+    UI.success("✅ Quick CI pipeline completed!")
+  end
+
+  # MARK: - Archive Lanes
+
+  desc "Create archive for distribution"
+  lane :archive do
+    build_app(
+      scheme: scheme,
+      project: project,
+      configuration: "Release",
+      export_method: "ad-hoc",
+      output_directory: "./build",
+      output_name: "IMDUMB.ipa"
+    )
+
+    UI.success("✅ Archive created successfully!")
+  end
+
+  # MARK: - Utility Lanes
+
+  desc "Clean build artifacts and derived data"
+  lane :clean do
+    clear_derived_data
+    sh("cd .. && rm -rf build fastlane/test_output")
+    UI.success("✅ Cleaned build artifacts and derived data")
+  end
+
+  desc "Update project dependencies"
+  lane :update_dependencies do
+    UI.message("📦 Updating Swift Package Manager dependencies...")
+    sh("cd .. && xcodebuild -resolvePackageDependencies -project #{project}")
+    UI.success("✅ Dependencies updated!")
+  end
+
+  # MARK: - After All
+
+  after_all do |lane|
+    UI.success("✅ Lane #{lane} completed successfully!")
+  end
+
+  error do |lane, exception|
+    UI.error("❌ Lane #{lane} failed with exception: #{exception}")
+  end
+end

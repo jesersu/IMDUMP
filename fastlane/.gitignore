@@ -1,0 +1,11 @@
+# Fastlane
+test_output/
+*.gem
+Preview.html
+report.xml
+
+# Fastlane.tools
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output

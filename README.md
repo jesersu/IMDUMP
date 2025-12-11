@@ -1,6 +1,9 @@
 # IMDUMB - iOS Movie Database App
 
-IMDUMB is an iOS application that displays movie categories and details, built with **MVP + Clean Architecture** pattern. The app demonstrates professional iOS development practices including proper separation of concerns, SOLID principles, UIKit with XIB-based interface design, and **encrypted secrets management with Arkana**.
+[![CI](https://github.com/jesersu/IMDUMP/actions/workflows/ci.yml/badge.svg)](https://github.com/jesersu/IMDUMP/actions/workflows/ci.yml)
+[![Build](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml/badge.svg)](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml)
+
+IMDUMB is an iOS application that displays movie categories and details, built with **MVP + Clean Architecture** pattern. The app demonstrates professional iOS development practices including proper separation of concerns, SOLID principles, UIKit with XIB-based interface design, **encrypted secrets management with Arkana**, and **CI/CD with Fastlane & GitHub Actions**.
 
 ## 🔐 Security Features
 
@@ -276,6 +279,99 @@ All UI is built with **XIB files**:
 - ✅ No programmatic views
 - ✅ Interface Builder for all screens
 - ✅ Custom reusable cells
+
+## 🚀 CI/CD & Automation
+
+### Fastlane
+
+The project uses Fastlane for iOS automation. Available lanes:
+
+**Setup & Dependencies:**
+```bash
+bundle exec fastlane setup              # Setup project and dependencies
+bundle exec fastlane update_dependencies # Update SPM dependencies
+```
+
+**Build:**
+```bash
+bundle exec fastlane build_debug        # Build Debug configuration
+bundle exec fastlane build_release      # Build Release configuration
+bundle exec fastlane archive            # Create IPA archive
+```
+
+**Testing:**
+```bash
+bundle exec fastlane test               # Run all unit tests
+bundle exec fastlane test_with_coverage # Run tests with code coverage
+```
+
+**CI/CD:**
+```bash
+bundle exec fastlane ci                 # Full CI pipeline (lint, test, build)
+bundle exec fastlane ci_quick           # Quick CI (test + build)
+```
+
+**Utilities:**
+```bash
+bundle exec fastlane clean              # Clean build artifacts
+bundle exec fastlane lint               # Run SwiftLint
+```
+
+### GitHub Actions Workflows
+
+The project includes automated CI/CD workflows:
+
+**1. CI Workflow** (`.github/workflows/ci.yml`)
+- Runs on: Push to main/develop, Pull Requests
+- Steps: Install dependencies → Generate secrets → Run tests → Build release
+- Uploads: Test results, code coverage reports
+
+**2. PR Check** (`.github/workflows/pr-check.yml`)
+- Runs on: Pull request events
+- Quick validation and automatic PR comments
+
+**3. Build** (`.github/workflows/build.yml`)
+- Runs on: Tags (`v*`), Manual trigger
+- Creates release archives and GitHub releases
+
+**4. Dependency Update** (`.github/workflows/dependency-update.yml`)
+- Runs on: Weekly schedule (Mondays), Manual trigger
+- Auto-creates PRs for dependency updates
+
+### Setting Up CI/CD
+
+**1. Install Fastlane:**
+```bash
+bundle install
+```
+
+**2. Setup Secrets (for CI):**
+
+Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
+- `TMDB_API_KEY`: Your TMDB API key
+- `FIREBASE_API_KEY`: Your Firebase API key
+
+**3. Run Locally:**
+```bash
+# First time setup
+bundle exec fastlane setup
+
+# Run tests
+bundle exec fastlane test
+
+# Full CI check
+bundle exec fastlane ci
+```
+
+### Continuous Integration Features
+
+✅ **Automated Testing** - All tests run on every push/PR
+✅ **Code Coverage** - Coverage reports uploaded as artifacts
+✅ **Build Validation** - Both Debug and Release builds verified
+✅ **Dependency Caching** - Faster builds with SPM and gem caching
+✅ **PR Comments** - Automatic CI result comments on PRs
+✅ **Release Automation** - Automatic releases on version tags
+✅ **Weekly Dependency Updates** - Automated dependency update PRs
 
 ## 📝 Additional Notes
 

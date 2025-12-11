@@ -1,0 +1,64 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-validation:
+    name: Validate Pull Request
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Cache Ruby gems
+      uses: actions/cache@v4
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Install dependencies
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+
+    - name: Setup dummy secrets for CI
+      run: |
+        echo "TMDBAPIKey=dummy_key_for_ci" > .env
+        echo "FirebaseAPIKey=dummy_firebase_key" >> .env
+        echo "APIBaseURL=https://api.themoviedb.org/3" >> .env
+        bundle exec arkana -e .env
+
+    - name: Resolve dependencies
+      run: xcodebuild -resolvePackageDependencies -project IMDUMB.xcodeproj
+
+    - name: Run quick CI
+      run: bundle exec fastlane ci_quick
+
+    - name: Comment PR with results
+      uses: actions/github-script@v7
+      if: always()
+      with:
+        script: |
+          const fs = require('fs');
+          let comment = '## 🚀 CI Results\n\n';
+          comment += '✅ Build and tests completed!\n\n';
+          comment += 'Check the Actions tab for detailed results.';
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

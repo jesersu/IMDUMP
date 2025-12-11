@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test & Build
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Cache Ruby gems
+      uses: actions/cache@v4
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v4
+      with:
+        path: |
+          .build
+          ~/Library/Developer/Xcode/DerivedData
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+
+    - name: Install Ruby dependencies
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+
+    - name: Setup project secrets
+      run: |
+        echo "TMDBAPIKey=dummy_key_for_ci" > .env
+        echo "FirebaseAPIKey=dummy_firebase_key" >> .env
+        echo "APIBaseURL=https://api.themoviedb.org/3" >> .env
+
+    - name: Generate Arkana secrets
+      run: bundle exec arkana -e .env
+
+    - name: Resolve SPM dependencies
+      run: xcodebuild -resolvePackageDependencies -project IMDUMB.xcodeproj
+
+    - name: Run tests
+      run: bundle exec fastlane test
+
+    - name: Build Release
+      run: bundle exec fastlane build_release
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: fastlane/test_output/
+        retention-days: 30
+
+    - name: Upload code coverage
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: code-coverage
+        path: fastlane/test_output/
+        retention-days: 30
