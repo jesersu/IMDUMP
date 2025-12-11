@@ -48,6 +48,8 @@
 		A10000062 /* RecommendationModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000061 /* RecommendationModalViewController.swift */; };
 		A10000064 /* RecommendationModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000063 /* RecommendationModalViewController.xib */; };
 		A1000006C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A1000006D /* Alamofire */; };
+		A10000071 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A10000072 /* FirebaseRemoteConfig */; };
+		A10000073 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000074 /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +103,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000006C /* Alamofire in Frameworks */,
+				A10000071 /* FirebaseRemoteConfig in Frameworks */,
+				A10000073 /* FirebaseCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +368,7 @@
 			mainGroup = A00000FF4;
 			packageReferences = (
 				A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = A00000FFE /* Products */;
 			projectDirPath = "";
@@ -661,6 +666,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -668,6 +681,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		A10000072 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		A10000074 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

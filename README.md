@@ -7,7 +7,9 @@ IMDUMB is an iOS application that displays movie categories and details, built w
 - **Arkana Integration** - API keys and sensitive data are encrypted using Arkana
 - **Environment-based Configuration** - Different settings for Debug/Release builds
 - **Type-Safe Secrets** - Compile-time safety when accessing encrypted keys
-- See [ARKANA_SETUP.md](ARKANA_SETUP.md) for detailed setup instructions
+- **Firebase Remote Config** - Dynamic configuration management without app updates
+- See [ARKANA_SETUP.md](ARKANA_SETUP.md) for Arkana setup instructions
+- See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for Firebase integration guide
 
 ## 📱 Features
 
@@ -118,7 +120,7 @@ Dependencies are managed via Swift Package Manager:
 
 - **Arkana** - Secrets encryption and management (Ruby gem)
 - **Alamofire 5.9.1** - HTTP networking and async image loading
-- **Firebase iOS SDK** (optional - for Remote Config/Database)
+- **Firebase iOS SDK 11.0+** - Remote Config for dynamic configuration
 
 ## 🚀 Installation & Setup
 
@@ -161,10 +163,12 @@ Dependencies are managed via Swift Package Manager:
    open IMDUMB.xcodeproj
    ```
 
-4. **Configure Firebase** (optional)
+4. **Configure Firebase** (Required for full functionality)
+   - Follow the detailed guide in [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
    - Download `GoogleService-Info.plist` from Firebase Console
-   - Add it to the project root (excluded from git via .gitignore)
-   - The app will work with mock data even without Firebase
+   - Add it to the project root in Xcode
+   - Set up Remote Config parameters in Firebase Console
+   - Note: The file is excluded from git via .gitignore
 
 5. **Build and Run**
    - Select a simulator or device
