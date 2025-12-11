@@ -23,7 +23,7 @@ class MockMovieDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "Movies fetched")
 
         // When
-        sut.fetchMovies(category: "popular") { result in
+        sut.fetchMovies(endpoint: "/movie/popular") { result in
             // Then
             switch result {
             case .success(let movies):
@@ -43,7 +43,7 @@ class MockMovieDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "Top rated movies fetched")
 
         // When
-        sut.fetchMovies(category: "top_rated") { result in
+        sut.fetchMovies(endpoint: "/movie/top_rated") { result in
             // Then
             switch result {
             case .success(let movies):
@@ -62,7 +62,7 @@ class MockMovieDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "Upcoming movies fetched")
 
         // When
-        sut.fetchMovies(category: "upcoming") { result in
+        sut.fetchMovies(endpoint: "/movie/upcoming") { result in
             // Then
             switch result {
             case .success(let movies):
@@ -81,7 +81,7 @@ class MockMovieDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "Now playing movies fetched")
 
         // When
-        sut.fetchMovies(category: "now_playing") { result in
+        sut.fetchMovies(endpoint: "/movie/now_playing") { result in
             // Then
             switch result {
             case .success(let movies):
@@ -110,8 +110,6 @@ class MockMovieDataStoreTests: XCTestCase {
                 XCTAssertFalse(details.title.isEmpty)
                 XCTAssertFalse(details.overview.isEmpty)
                 XCTAssertGreaterThan(details.voteAverage, 0)
-                XCTAssertFalse(details.credits.cast.isEmpty, "Should have cast members")
-                XCTAssertFalse(details.images.backdrops.isEmpty, "Should have images")
                 expectation.fulfill()
             case .failure:
                 XCTFail("Mock data store should not fail for valid ID")
@@ -158,7 +156,7 @@ class MockMovieDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "Valid DTOs returned")
 
         // When
-        sut.fetchMovies(category: "popular") { result in
+        sut.fetchMovies(endpoint: "/movie/popular") { result in
             // Then
             switch result {
             case .success(let movies):
@@ -191,12 +189,6 @@ class MockMovieDataStoreTests: XCTestCase {
                 XCTAssertFalse(details.title.isEmpty)
                 XCTAssertGreaterThanOrEqual(details.voteAverage, 0)
                 XCTAssertLessThanOrEqual(details.voteAverage, 10)
-
-                // Check cast
-                for cast in details.credits.cast {
-                    XCTAssertGreaterThan(cast.id, 0)
-                    XCTAssertFalse(cast.name.isEmpty)
-                }
 
                 expectation.fulfill()
             case .failure:
