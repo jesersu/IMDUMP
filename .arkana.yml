@@ -3,13 +3,17 @@
 
 namespace: ArkanaKeys
 package_manager: spm
+package_name: IMDUMBSecrets
 
+environments: # Optional. List of environments that will be used to generate secret keys when you have keys that are different between environments (e.g. debug/staging/prod). Defaults to empty.
 # Global secrets (same across all environments)
 global_secrets:
   - TMDBAPIKey
   - FirebaseAPIKey
   - APIBaseURL
+environment_secrets: # Optional. This will create a secret for each entry in this list, one for each env, appending a suffix corresponding to the name of the env. Defaults to empty.
+  # - MyServiceAPIKey # Will lookup for MyServiceAPIKeyDebug and MyServiceAPIKeyRelease env vars (assuming no flavor was declared)
 
 # Import settings
-import_name: IMDUMB
+import_name: ArkanaKeys
 should_generate_unit_tests: false

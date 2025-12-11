@@ -53,7 +53,7 @@ class CategoriesViewController: UIViewController {
     private func setupPresenter() {
         // Using mock data store for development
         // Change to RemoteMovieDataStore for production
-        let dataStore = MockMovieDataStore()
+        let dataStore = RemoteMovieDataStore()
         let repository = MovieRepository(dataStore: dataStore)
         let useCase = GetCategoriesUseCase(repository: repository)
 

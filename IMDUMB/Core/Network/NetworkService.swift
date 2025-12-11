@@ -1,5 +1,6 @@
 import Foundation
 import Alamofire
+import ArkanaKeys
 
 // MARK: - Network Service Protocol
 // SOLID: Interface Segregation Principle - Clean interface for network operations
@@ -66,12 +67,10 @@ class NetworkService: NetworkServiceProtocol {
     private let session: Session
 
     init(baseURL: String? = nil, apiKey: String? = nil) {
-        // When SecretsManager is added to Xcode project, use:
-        // self.baseURL = baseURL ?? SecretsManager.shared.apiBaseURL
-        // self.apiKey = apiKey ?? SecretsManager.shared.tmdbAPIKey
-
-        self.baseURL = baseURL ?? "https://api.themoviedb.org/3"
-        self.apiKey = apiKey ?? ProcessInfo.processInfo.environment["TMDB_API_KEY"] ?? "YOUR_API_KEY_HERE"
+        // Using Arkana for encrypted secrets
+        let arkana = ArkanaKeys.Global()
+        self.baseURL = baseURL ?? arkana.aPIBaseURL
+        self.apiKey = apiKey ?? arkana.tMDBAPIKey
 
         // Configure Alamofire session
         let configuration = URLSessionConfiguration.default

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,7 +23,6 @@
 		A10000032 /* UIViewController+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000031 /* UIViewController+Loading.swift */; };
 		A10000034 /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000033 /* String+HTML.swift */; };
 		A10000036 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000035 /* NetworkService.swift */; };
-		A1000006F /* UIImageView+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000070 /* UIImageView+Alamofire.swift */; };
 		A10000038 /* RemoteMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000037 /* RemoteMovieDataStore.swift */; };
 		A1000003A /* MockMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000039 /* MockMovieDataStore.swift */; };
 		A1000003C /* FirebaseConfigDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003B /* FirebaseConfigDataStore.swift */; };
@@ -48,8 +47,12 @@
 		A10000062 /* RecommendationModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000061 /* RecommendationModalViewController.swift */; };
 		A10000064 /* RecommendationModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A10000063 /* RecommendationModalViewController.xib */; };
 		A1000006C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A1000006D /* Alamofire */; };
+		A1000006F /* UIImageView+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000070 /* UIImageView+Alamofire.swift */; };
 		A10000071 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A10000072 /* FirebaseRemoteConfig */; };
 		A10000073 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000074 /* FirebaseCore */; };
+		CA0650352EEA63B300E4B5A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0650342EEA63B300E4B5A0 /* GoogleService-Info.plist */; };
+		CA0650382EEA721200E4B5A0 /* IMDUMB in Frameworks */ = {isa = PBXBuildFile; productRef = CA0650372EEA721200E4B5A0 /* IMDUMB */; };
+		CA06503B2EEA734B00E4B5A0 /* IMDUMBInterfaces in Frameworks */ = {isa = PBXBuildFile; productRef = CA06503A2EEA734B00E4B5A0 /* IMDUMBInterfaces */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,7 +73,6 @@
 		A1000002F /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
 		A10000031 /* UIViewController+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loading.swift"; sourceTree = "<group>"; };
 		A10000033 /* String+HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
-		A10000070 /* UIImageView+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Alamofire.swift"; sourceTree = "<group>"; };
 		A10000035 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		A10000037 /* RemoteMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteMovieDataStore.swift; sourceTree = "<group>"; };
 		A10000039 /* MockMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDataStore.swift; sourceTree = "<group>"; };
@@ -95,6 +97,8 @@
 		A1000005F /* MovieDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieDetailViewController.xib; sourceTree = "<group>"; };
 		A10000061 /* RecommendationModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationModalViewController.swift; sourceTree = "<group>"; };
 		A10000063 /* RecommendationModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationModalViewController.xib; sourceTree = "<group>"; };
+		A10000070 /* UIImageView+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Alamofire.swift"; sourceTree = "<group>"; };
+		CA0650342EEA63B300E4B5A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +106,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0650382EEA721200E4B5A0 /* ArkanaKeys in Frameworks */,
 				A1000006C /* Alamofire in Frameworks */,
+				CA06503B2EEA734B00E4B5A0 /* ArkanaKeysInterfaces in Frameworks */,
 				A10000071 /* FirebaseRemoteConfig in Frameworks */,
 				A10000073 /* FirebaseCore in Frameworks */,
 			);
@@ -130,6 +136,7 @@
 		A00000FFF /* IMDUMB */ = {
 			isa = PBXGroup;
 			children = (
+				CA0650342EEA63B300E4B5A0 /* GoogleService-Info.plist */,
 				A10000000 /* AppDelegate.swift */,
 				A10000002 /* SceneDelegate.swift */,
 				A10000012 /* Presentation */,
@@ -151,6 +158,109 @@
 				A10000068 /* Recommendation */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		A10000013 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A10000017 /* Entities */,
+				A10000018 /* Repositories */,
+				A10000019 /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		A10000014 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A1000001A /* DTOs */,
+				A1000001B /* DataStores */,
+				A10000069 /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A10000015 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A1000001C /* Protocols */,
+				A1000001D /* Extensions */,
+				A1000006A /* Network */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A10000016 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A10000007 /* Assets.xcassets */,
+				A10000009 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A10000017 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A1000001F /* Movie.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A10000018 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				A10000021 /* ConfigRepositoryProtocol.swift */,
+				A10000023 /* MovieRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A10000019 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				A10000025 /* GetCategoriesUseCase.swift */,
+				A10000027 /* GetMovieDetailsUseCase.swift */,
+				A10000029 /* LoadConfigurationUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		A1000001A /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002B /* MovieDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		A1000001B /* DataStores */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002D /* MovieDataStoreProtocol.swift */,
+				A10000037 /* RemoteMovieDataStore.swift */,
+				A10000039 /* MockMovieDataStore.swift */,
+				A1000003B /* FirebaseConfigDataStore.swift */,
+			);
+			path = DataStores;
+			sourceTree = "<group>";
+		};
+		A1000001C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A1000002F /* ViewProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A1000001D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A10000031 /* UIViewController+Loading.swift */,
+				A10000033 /* String+HTML.swift */,
+				A10000070 /* UIImageView+Alamofire.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		A10000065 /* Splash */ = {
@@ -199,53 +309,6 @@
 			path = Recommendation;
 			sourceTree = "<group>";
 		};
-		A10000013 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				A10000017 /* Entities */,
-				A10000018 /* Repositories */,
-				A10000019 /* UseCases */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		A10000017 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001F /* Movie.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		A10000018 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				A10000021 /* ConfigRepositoryProtocol.swift */,
-				A10000023 /* MovieRepositoryProtocol.swift */,
-			);
-			path = Repositories;
-			sourceTree = "<group>";
-		};
-		A10000019 /* UseCases */ = {
-			isa = PBXGroup;
-			children = (
-				A10000025 /* GetCategoriesUseCase.swift */,
-				A10000027 /* GetMovieDetailsUseCase.swift */,
-				A10000029 /* LoadConfigurationUseCase.swift */,
-			);
-			path = UseCases;
-			sourceTree = "<group>";
-		};
-		A10000014 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001A /* DTOs */,
-				A1000001B /* DataStores */,
-				A10000069 /* Repositories */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		A10000069 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,68 +318,12 @@
 			path = Repositories;
 			sourceTree = "<group>";
 		};
-		A1000001A /* DTOs */ = {
-			isa = PBXGroup;
-			children = (
-				A1000002B /* MovieDTO.swift */,
-			);
-			path = DTOs;
-			sourceTree = "<group>";
-		};
-		A1000001B /* DataStores */ = {
-			isa = PBXGroup;
-			children = (
-				A1000002D /* MovieDataStoreProtocol.swift */,
-				A10000037 /* RemoteMovieDataStore.swift */,
-				A10000039 /* MockMovieDataStore.swift */,
-				A1000003B /* FirebaseConfigDataStore.swift */,
-			);
-			path = DataStores;
-			sourceTree = "<group>";
-		};
-		A10000015 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				A1000001C /* Protocols */,
-				A1000001D /* Extensions */,
-				A1000006A /* Network */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		A1000006A /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				A10000035 /* NetworkService.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		A1000001C /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				A1000002F /* ViewProtocol.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		A1000001D /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				A10000031 /* UIViewController+Loading.swift */,
-				A10000033 /* String+HTML.swift */,
-				A10000070 /* UIImageView+Alamofire.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		A10000016 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				A10000007 /* Assets.xcassets */,
-				A10000009 /* LaunchScreen.storyboard */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +344,8 @@
 			name = IMDUMB;
 			packageProductDependencies = (
 				A1000006D /* Alamofire */,
+				CA0650372EEA721200E4B5A0 /* IMDUMB */,
+				CA06503A2EEA734B00E4B5A0 /* IMDUMBInterfaces */,
 			);
 			productName = IMDUMB;
 			productReference = A00000FFD /* IMDUMB.app */;
@@ -369,6 +378,8 @@
 			packageReferences = (
 				A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CA0650362EEA721200E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeys" */,
+				CA0650392EEA734B00E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeysInterfaces" */,
 			);
 			productRefGroup = A00000FFE /* Products */;
 			projectDirPath = "";
@@ -386,6 +397,7 @@
 			files = (
 				A10000008 /* Assets.xcassets in Resources */,
 				A1000000B /* LaunchScreen.storyboard in Resources */,
+				CA0650352EEA63B300E4B5A0 /* GoogleService-Info.plist in Resources */,
 				A10000048 /* SplashViewController.xib in Resources */,
 				A10000050 /* CategoriesViewController.xib in Resources */,
 				A10000054 /* CategoryCollectionViewCell.xib in Resources */,
@@ -657,6 +669,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		CA0650362EEA721200E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeys" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ArkanaKeys/ArkanaKeys;
+		};
+		CA0650392EEA734B00E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeysInterfaces" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ArkanaKeys/ArkanaKeysInterfaces;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		A1000006E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -691,6 +714,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		CA0650372EEA721200E4B5A0 /* ArkanaKeys */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArkanaKeys;
+		};
+		CA06503A2EEA734B00E4B5A0 /* ArkanaKeysInterfaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArkanaKeysInterfaces;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
