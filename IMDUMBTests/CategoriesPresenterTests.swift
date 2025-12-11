@@ -30,11 +30,26 @@ class MockCategoriesView: CategoriesViewProtocol {
 }
 
 // MARK: - Mock Use Case for Presenter Tests
-class MockGetCategoriesUseCase {
+class MockGetCategoriesUseCase: GetCategoriesUseCase {
     var shouldReturnError = false
     var mockCategories: [IMDUMB.Category] = []
 
-    func execute(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
+    // Mock repository to satisfy parent initializer
+    private class MockRepository: MovieRepositoryProtocol {
+        var categories: [IMDUMB.Category] = []
+        func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
+            completion(.success(categories))
+        }
+        func getMovieDetails(movieId: Int, completion: @escaping (Result<Movie, Error>) -> Void) {
+            completion(.failure(NSError(domain: "NotImplemented", code: 1, userInfo: nil)))
+        }
+    }
+
+    init() {
+        super.init(repository: MockRepository())
+    }
+
+    override func execute(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NSError(domain: "UseCaseError", code: 1, userInfo: nil)))
         } else {
