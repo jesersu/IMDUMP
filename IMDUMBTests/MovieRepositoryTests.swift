@@ -5,9 +5,11 @@ import XCTest
 class MockMovieDataStoreForTests: MovieDataStoreProtocol {
     var shouldReturnError = false
     var mockMovieDTOs: [MovieDTO] = []
-    var mockMovieDetailDTO: MovieDetailDTO?
+    var mockMovieDTO: MovieDTO?
+    var mockActorDTOs: [ActorDTO] = []
+    var mockImages: [String] = []
 
-    func fetchMovies(category: String, completion: @escaping (Result<[MovieDTO], Error>) -> Void) {
+    func fetchMovies(endpoint: String, completion: @escaping (Result<[MovieDTO], Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
         } else {
@@ -15,13 +17,29 @@ class MockMovieDataStoreForTests: MovieDataStoreProtocol {
         }
     }
 
-    func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDetailDTO, Error>) -> Void) {
+    func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDTO, Error>) -> Void) {
         if shouldReturnError {
             completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
-        } else if let dto = mockMovieDetailDTO {
+        } else if let dto = mockMovieDTO {
             completion(.success(dto))
         } else {
             completion(.failure(NSError(domain: "NoMockData", code: 2, userInfo: nil)))
+        }
+    }
+
+    func fetchMovieCredits(movieId: Int, completion: @escaping (Result<[ActorDTO], Error>) -> Void) {
+        if shouldReturnError {
+            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+        } else {
+            completion(.success(mockActorDTOs))
+        }
+    }
+
+    func fetchMovieImages(movieId: Int, completion: @escaping (Result<[String], Error>) -> Void) {
+        if shouldReturnError {
+            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+        } else {
+            completion(.success(mockImages))
         }
     }
 }
@@ -108,21 +126,24 @@ class MovieRepositoryTests: XCTestCase {
 
     func testGetMovieDetails_WhenDataStoreReturnsDetails_ShouldMapToDomainModel() {
         // Given
-        let castDTO = CastDTO(id: 1, name: "Actor Name", character: "Character", profilePath: "/actor.jpg")
-        let imageDTO = ImageDTO(filePath: "/image.jpg")
-
-        let detailDTO = MovieDetailDTO(
+        let movieDTO = MovieDTO(
             id: 123,
             title: "Detailed Movie",
             overview: "Detailed Overview",
             posterPath: "/poster.jpg",
             backdropPath: "/backdrop.jpg",
             voteAverage: 9.0,
-            releaseDate: "2024-01-01",
-            images: ImagesDTO(backdrops: [imageDTO]),
-            credits: CreditsDTO(cast: [castDTO])
+            releaseDate: "2024-01-01"
         )
-        mockDataStore.mockMovieDetailDTO = detailDTO
+        let actorDTO = ActorDTO(
+            id: 1,
+            name: "Actor Name",
+            character: "Character",
+            profilePath: "/actor.jpg"
+        )
+        mockDataStore.mockMovieDTO = movieDTO
+        mockDataStore.mockActorDTOs = [actorDTO]
+        mockDataStore.mockImages = ["/image1.jpg", "/image2.jpg"]
 
         let expectation = self.expectation(description: "Movie details mapped")
 
@@ -134,7 +155,7 @@ class MovieRepositoryTests: XCTestCase {
                 XCTAssertEqual(movie.id, 123)
                 XCTAssertEqual(movie.title, "Detailed Movie")
                 XCTAssertEqual(movie.voteAverage, 9.0)
-                XCTAssertEqual(movie.images.count, 1)
+                XCTAssertEqual(movie.images.count, 2)
                 XCTAssertEqual(movie.cast.count, 1)
                 XCTAssertEqual(movie.cast.first?.name, "Actor Name")
                 expectation.fulfill()
@@ -157,7 +178,7 @@ class MovieRepositoryTests: XCTestCase {
             // Then
             switch result {
             case .success:
-                XCTFail("Expected failure but got success")
+                XCTFail("Expected failure but got failure")
             case .failure(let error):
                 XCTAssertNotNil(error)
                 expectation.fulfill()
@@ -171,18 +192,18 @@ class MovieRepositoryTests: XCTestCase {
 
     func testGetMovieDetails_WhenDTOHasNilValues_ShouldHandleGracefully() {
         // Given
-        let detailDTO = MovieDetailDTO(
+        let movieDTO = MovieDTO(
             id: 456,
             title: "Minimal Movie",
             overview: "Minimal data",
             posterPath: nil,
             backdropPath: nil,
             voteAverage: 5.0,
-            releaseDate: "2024-01-01",
-            images: ImagesDTO(backdrops: []),
-            credits: CreditsDTO(cast: [])
+            releaseDate: nil
         )
-        mockDataStore.mockMovieDetailDTO = detailDTO
+        mockDataStore.mockMovieDTO = movieDTO
+        mockDataStore.mockActorDTOs = []
+        mockDataStore.mockImages = []
 
         let expectation = self.expectation(description: "Minimal movie mapped")
 
