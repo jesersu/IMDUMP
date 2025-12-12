@@ -63,7 +63,7 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cast-label">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cast-label">
                                     <rect key="frame" x="16" y="506.33333333333331" width="361" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="cast-height"/>
@@ -88,36 +88,36 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="carousel-scroll" firstAttribute="top" secondItem="content-view" secondAttribute="top" id="carousel-top"/>
-                                <constraint firstItem="carousel-scroll" firstAttribute="leading" secondItem="content-view" secondAttribute="leading" id="carousel-leading"/>
-                                <constraint firstItem="carousel-scroll" firstAttribute="trailing" secondItem="content-view" secondAttribute="trailing" id="carousel-trailing"/>
-                                <constraint firstItem="page-control" firstAttribute="centerX" secondItem="carousel-scroll" secondAttribute="centerX" id="page-centerX"/>
-                                <constraint firstItem="carousel-scroll" firstAttribute="bottom" secondItem="page-control" secondAttribute="bottom" constant="4" id="page-bottom"/>
-                                <constraint firstItem="title-label" firstAttribute="top" secondItem="carousel-scroll" secondAttribute="bottom" constant="16" id="title-top"/>
-                                <constraint firstItem="title-label" firstAttribute="leading" secondItem="content-view" secondAttribute="leading" constant="16" id="title-leading"/>
-                                <constraint firstItem="content-view" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" constant="16" id="title-trailing"/>
-                                <constraint firstItem="rating-label" firstAttribute="top" secondItem="title-label" secondAttribute="bottom" constant="8" id="rating-top"/>
-                                <constraint firstItem="rating-label" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="rating-leading"/>
-                                <constraint firstItem="rating-label" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="rating-trailing"/>
-                                <constraint firstItem="overview-text" firstAttribute="top" secondItem="rating-label" secondAttribute="bottom" constant="16" id="overview-top"/>
-                                <constraint firstItem="overview-text" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="overview-leading"/>
-                                <constraint firstItem="overview-text" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="overview-trailing"/>
-                                <constraint firstItem="cast-label" firstAttribute="top" secondItem="overview-text" secondAttribute="bottom" constant="16" id="cast-top"/>
-                                <constraint firstItem="cast-label" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="cast-leading"/>
-                                <constraint firstItem="cast-label" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="cast-trailing"/>
-                                <constraint firstItem="actors-collection" firstAttribute="top" secondItem="cast-label" secondAttribute="bottom" constant="10" id="actors-top"/>
+                                <constraint firstAttribute="bottom" secondItem="actors-collection" secondAttribute="bottom" constant="140" id="actors-bottom"/>
                                 <constraint firstItem="actors-collection" firstAttribute="leading" secondItem="content-view" secondAttribute="leading" id="actors-leading"/>
+                                <constraint firstItem="actors-collection" firstAttribute="top" secondItem="cast-label" secondAttribute="bottom" constant="10" id="actors-top"/>
                                 <constraint firstItem="actors-collection" firstAttribute="trailing" secondItem="content-view" secondAttribute="trailing" id="actors-trailing"/>
-                                <constraint firstItem="content-view" firstAttribute="bottom" secondItem="actors-collection" secondAttribute="bottom" constant="140" id="actors-bottom"/>
-                                <constraint firstItem="content-view" firstAttribute="width" secondItem="main-scroll" secondAttribute="width" id="content-width"/>
+                                <constraint firstItem="carousel-scroll" firstAttribute="leading" secondItem="content-view" secondAttribute="leading" id="carousel-leading"/>
+                                <constraint firstItem="carousel-scroll" firstAttribute="top" secondItem="content-view" secondAttribute="top" id="carousel-top"/>
+                                <constraint firstItem="carousel-scroll" firstAttribute="trailing" secondItem="content-view" secondAttribute="trailing" id="carousel-trailing"/>
+                                <constraint firstItem="cast-label" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="cast-leading"/>
+                                <constraint firstItem="cast-label" firstAttribute="top" secondItem="overview-text" secondAttribute="bottom" constant="16" id="cast-top"/>
+                                <constraint firstItem="cast-label" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="cast-trailing"/>
+                                <constraint firstAttribute="width" secondItem="main-scroll" secondAttribute="width" id="content-width"/>
+                                <constraint firstItem="overview-text" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="overview-leading"/>
+                                <constraint firstItem="overview-text" firstAttribute="top" secondItem="rating-label" secondAttribute="bottom" constant="16" id="overview-top"/>
+                                <constraint firstItem="overview-text" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="overview-trailing"/>
+                                <constraint firstItem="carousel-scroll" firstAttribute="bottom" secondItem="page-control" secondAttribute="bottom" constant="4" id="page-bottom"/>
+                                <constraint firstItem="page-control" firstAttribute="centerX" secondItem="carousel-scroll" secondAttribute="centerX" id="page-centerX"/>
+                                <constraint firstItem="rating-label" firstAttribute="leading" secondItem="title-label" secondAttribute="leading" id="rating-leading"/>
+                                <constraint firstItem="rating-label" firstAttribute="top" secondItem="title-label" secondAttribute="bottom" constant="8" id="rating-top"/>
+                                <constraint firstItem="rating-label" firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" id="rating-trailing"/>
+                                <constraint firstItem="title-label" firstAttribute="leading" secondItem="content-view" secondAttribute="leading" constant="16" id="title-leading"/>
+                                <constraint firstItem="title-label" firstAttribute="top" secondItem="carousel-scroll" secondAttribute="bottom" constant="16" id="title-top"/>
+                                <constraint firstAttribute="trailing" secondItem="title-label" secondAttribute="trailing" constant="16" id="title-trailing"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="content-view" firstAttribute="top" secondItem="main-scroll" secondAttribute="top" id="content-top"/>
-                        <constraint firstItem="content-view" firstAttribute="leading" secondItem="main-scroll" secondAttribute="leading" id="content-leading"/>
-                        <constraint firstItem="content-view" firstAttribute="trailing" secondItem="main-scroll" secondAttribute="trailing" id="content-trailing"/>
                         <constraint firstItem="content-view" firstAttribute="bottom" secondItem="main-scroll" secondAttribute="bottom" id="content-bottom"/>
+                        <constraint firstItem="content-view" firstAttribute="leading" secondItem="main-scroll" secondAttribute="leading" id="content-leading"/>
+                        <constraint firstItem="content-view" firstAttribute="top" secondItem="main-scroll" secondAttribute="top" id="content-top"/>
+                        <constraint firstItem="content-view" firstAttribute="trailing" secondItem="main-scroll" secondAttribute="trailing" id="content-trailing"/>
                     </constraints>
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="recommend-button">
@@ -135,13 +135,13 @@
             <viewLayoutGuide key="safeArea" id="safe-area"/>
             <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="main-scroll" firstAttribute="top" secondItem="view" secondAttribute="top" id="scroll-top"/>
-                <constraint firstItem="main-scroll" firstAttribute="leading" secondItem="view" secondAttribute="leading" id="scroll-leading"/>
-                <constraint firstItem="main-scroll" firstAttribute="trailing" secondItem="view" secondAttribute="trailing" id="scroll-trailing"/>
-                <constraint firstItem="recommend-button" firstAttribute="top" secondItem="main-scroll" secondAttribute="bottom" constant="0" id="button-top"/>
-                <constraint firstItem="recommend-button" firstAttribute="leading" secondItem="safe-area" secondAttribute="leading" constant="16" id="button-leading"/>
-                <constraint firstItem="safe-area" firstAttribute="trailing" secondItem="recommend-button" secondAttribute="trailing" constant="16" id="button-trailing"/>
                 <constraint firstItem="safe-area" firstAttribute="bottom" secondItem="recommend-button" secondAttribute="bottom" constant="16" id="button-bottom"/>
+                <constraint firstItem="recommend-button" firstAttribute="leading" secondItem="safe-area" secondAttribute="leading" constant="16" id="button-leading"/>
+                <constraint firstItem="recommend-button" firstAttribute="top" secondItem="main-scroll" secondAttribute="bottom" id="button-top"/>
+                <constraint firstItem="safe-area" firstAttribute="trailing" secondItem="recommend-button" secondAttribute="trailing" constant="16" id="button-trailing"/>
+                <constraint firstItem="main-scroll" firstAttribute="leading" secondItem="view" secondAttribute="leading" id="scroll-leading"/>
+                <constraint firstItem="main-scroll" firstAttribute="top" secondItem="view" secondAttribute="top" id="scroll-top"/>
+                <constraint firstItem="main-scroll" firstAttribute="trailing" secondItem="view" secondAttribute="trailing" id="scroll-trailing"/>
             </constraints>
             <point key="canvasLocation" x="139" y="20"/>
         </view>

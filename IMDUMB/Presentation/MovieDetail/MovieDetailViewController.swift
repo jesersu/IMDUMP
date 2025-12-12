@@ -38,8 +38,8 @@ class MovieDetailViewController: UIViewController {
         ratingLabel.font = UIFont.systemFont(ofSize: 18)
         ratingLabel.textColor = .systemYellow
 
-        overviewTextView.backgroundColor = .clear
-        overviewTextView.textColor = .white
+        overviewTextView.backgroundColor = .green
+        overviewTextView.textColor = .blue
         overviewTextView.font = UIFont.systemFont(ofSize: 16)
         overviewTextView.isEditable = false
         overviewTextView.isScrollEnabled = false

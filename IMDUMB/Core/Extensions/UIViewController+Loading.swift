@@ -43,7 +43,7 @@ extension UIViewController {
 
         // Create toast container
         let toastView = UIView()
-        toastView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        toastView.backgroundColor = UIColor.green.withAlphaComponent(0.8)
         toastView.layer.cornerRadius = 10
         toastView.tag = Self.toastViewTag
         toastView.translatesAutoresizingMaskIntoConstraints = false
