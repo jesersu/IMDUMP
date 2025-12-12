@@ -1,181 +1,181 @@
-# IMDUMB - iOS Movie Database App
+# IMDUMB - Aplicación iOS de Base de Datos de Películas
 
 [![CI](https://github.com/jesersu/IMDUMP/actions/workflows/ci.yml/badge.svg)](https://github.com/jesersu/IMDUMP/actions/workflows/ci.yml)
 [![Build](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml/badge.svg)](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml)
 
-IMDUMB is an iOS application that displays movie categories and details, built with **MVP + Clean Architecture** pattern. The app demonstrates professional iOS development practices including proper separation of concerns, SOLID principles, UIKit with XIB-based interface design, **encrypted secrets management with Arkana**, and **CI/CD with Fastlane & GitHub Actions**.
+IMDUMB es una aplicación iOS que muestra categorías y detalles de películas, construida con el patrón **MVP + Arquitectura Limpia**. La aplicación demuestra prácticas profesionales de desarrollo iOS incluyendo una adecuada separación de responsabilidades, principios SOLID, diseño de interfaz con UIKit y archivos XIB, **gestión encriptada de secretos con Arkana**, e **integración continua/despliegue con Fastlane y GitHub Actions**.
 
-## 🔐 Security Features
+## 🔐 Características de Seguridad
 
-- **Arkana Integration** - API keys and sensitive data are encrypted using Arkana
-- **Environment-based Configuration** - Different settings for Debug/Release builds
-- **Type-Safe Secrets** - Compile-time safety when accessing encrypted keys
-- **Firebase Remote Config** - Dynamic configuration management without app updates
+- **Integración con Arkana** - Las claves API y datos sensibles se encriptan usando Arkana
+- **Configuración basada en Entornos** - Diferentes configuraciones para compilaciones Debug/Release
+- **Secretos Type-Safe** - Seguridad en tiempo de compilación al acceder a claves encriptadas
+- **Firebase Remote Config** - Gestión de configuración dinámica sin actualizaciones de la aplicación
 
-## 📱 Features
+## 📱 Características
 
-- **Splash Screen** with Firebase configuration loading
-- **Categories Screen** displaying movies organized by category (Popular, Top Rated, Upcoming, Now Playing)
-- **Unique UI Pattern**: UICollectionView with UITableView inside each cell
-- **Offline Support**:
-  - CoreData caching with 24-hour TTL
-  - Cache-first strategy with background refresh
-  - Toast notification when viewing cached data offline
-  - Automatic migration from UserDefaults to CoreData
-- **Reactive Programming**:
-  - RxSwift for all async operations
-  - Single<T> pattern for one-time operations
-  - DisposeBag for automatic memory management
-  - MainScheduler for thread-safe UI updates
-- **Movie Detail Screen** featuring:
-  - Horizontal image carousel with pagination
-  - Movie title, rating, and HTML-formatted description
-  - Cast list in horizontal scrolling collection
-  - Fixed bottom "Recomendar" (Recommend) button
-- **Recommendation Modal** with:
-  - Dynamic height that adjusts to content
-  - Movie description display
-  - Comment text field
-  - Confirmation functionality
+- **Pantalla de Presentación** con carga de configuración de Firebase
+- **Pantalla de Categorías** que muestra películas organizadas por categoría (Popular, Mejor Valoradas, Próximas, En Cines Ahora)
+- **Patrón de UI Único**: UICollectionView con UITableView dentro de cada celda
+- **Soporte sin Conexión**:
+  - Almacenamiento en caché con CoreData con TTL de 24 horas
+  - Estrategia cache-first con actualización en segundo plano
+  - Notificación toast cuando se visualizan datos en caché sin conexión
+  - Migración automática de UserDefaults a CoreData
+- **Programación Reactiva**:
+  - RxSwift para todas las operaciones asincrónicas
+  - Patrón Single<T> para operaciones de una sola vez
+  - DisposeBag para gestión automática de memoria
+  - MainScheduler para actualizaciones de UI thread-safe
+- **Pantalla de Detalles de Película** que presenta:
+  - Carrusel horizontal de imágenes con paginación
+  - Título de película, calificación y descripción con formato HTML
+  - Lista de actores en colección de desplazamiento horizontal
+  - Botón fijo inferior "Recomendar"
+- **Modal de Recomendación** con:
+  - Altura dinámica que se ajusta al contenido
+  - Visualización de descripción de película
+  - Campo de texto para comentarios
+  - Funcionalidad de confirmación
 
-## 🏗️ Architecture
+## 🏗️ Arquitectura
 
-The project implements a **Clean Architecture** with **MVP (Model-View-Presenter)** pattern, enhanced with **RxSwift** for reactive data flow. This architecture ensures complete separation of concerns, testability, and maintainability.
+El proyecto implementa una **Arquitectura Limpia** con el patrón **MVP (Modelo-Vista-Presentador)**, mejorado con **RxSwift** para el flujo de datos reactivo. Esta arquitectura asegura una completa separación de responsabilidades, capacidad de prueba y mantenibilidad.
 
-### Architecture Layers
+### Capas de Arquitectura
 
-The application is divided into four distinct layers, each with specific responsibilities:
+La aplicación está dividida en cuatro capas distintas, cada una con responsabilidades específicas:
 
-#### 1. **Domain Layer** (Business Logic - Framework Independent)
-The core of the application, containing pure business logic with zero dependencies on frameworks or external libraries.
+#### 1. **Capa de Dominio** (Lógica de Negocio - Sin Dependencias de Framework)
+El núcleo de la aplicación, que contiene lógica de negocio pura sin dependencias en frameworks o librerías externas.
 
-- **Entities** (`Domain/Entities/`):
-  - Pure Swift structs representing business models
-  - `Movie.swift`: Movie entity with all its properties
-  - `Actor.swift`: Actor/cast member entity
-  - `Category.swift`: Movie category grouping
-  - No dependencies, no frameworks, just data structures
+- **Entidades** (`Domain/Entities/`):
+  - Structs puros de Swift representando modelos de negocio
+  - `Movie.swift`: Entidad de película con todas sus propiedades
+  - `Actor.swift`: Entidad de actor/miembro del elenco
+  - `Category.swift`: Agrupación de categorías de películas
+  - Sin dependencias, sin frameworks, solo estructuras de datos
 
-- **Repository Protocols** (`Domain/Repositories/`):
-  - Abstract interfaces defining data operations
-  - `MovieRepositoryProtocol`: Defines methods to get categories and movie details
-  - Returns `Single<T>` (RxSwift) for reactive data flow
-  - Allows dependency inversion (high-level modules don't depend on low-level details)
+- **Protocolos de Repositorio** (`Domain/Repositories/`):
+  - Interfaces abstractas que definen operaciones de datos
+  - `MovieRepositoryProtocol`: Define métodos para obtener categorías y detalles de películas
+  - Retorna `Single<T>` (RxSwift) para flujo de datos reactivo
+  - Permite inversión de dependencias (módulos de alto nivel no dependen de detalles de bajo nivel)
 
-- **Use Cases** (`Domain/UseCases/`):
-  - Single-purpose business operations following SRP
-  - `GetCategoriesUseCase`: Fetches movie categories, filters empty categories
-  - `GetMovieDetailsUseCase`: Fetches complete movie information
-  - `LoadConfigurationUseCase`: Loads Firebase Remote Config
-  - Each use case depends only on repository protocols (DIP)
+- **Casos de Uso** (`Domain/UseCases/`):
+  - Operaciones de negocio de propósito único siguiendo SRP
+  - `GetCategoriesUseCase`: Obtiene categorías de películas, filtra categorías vacías
+  - `GetMovieDetailsUseCase`: Obtiene información completa de películas
+  - `LoadConfigurationUseCase`: Carga Firebase Remote Config
+  - Cada caso de uso depende solo de protocolos de repositorio (DIP)
 
-#### 2. **Data Layer** (Data Management)
-Handles all data operations: network requests, local caching, and data transformation.
+#### 2. **Capa de Datos** (Gestión de Datos)
+Maneja todas las operaciones de datos: solicitudes de red, almacenamiento en caché local y transformación de datos.
 
 - **DTOs** (`Data/DTOs/`):
-  - Data Transfer Objects for API responses and cache storage
-  - `MovieDTO`, `ActorDTO`: Match API/database structure
-  - `CachedMoviesDTO`, `CachedMovieDetailsDTO`: CoreData cache wrappers
-  - `DTO+Mapping.swift`: Extension methods to convert DTOs to Domain entities
-  - Separated from domain models to allow independent evolution
+  - Objetos de Transferencia de Datos para respuestas de API y almacenamiento en caché
+  - `MovieDTO`, `ActorDTO`: Coinciden con la estructura de API/base de datos
+  - `CachedMoviesDTO`, `CachedMovieDetailsDTO`: Envoltorios de caché CoreData
+  - `DTO+Mapping.swift`: Métodos de extensión para convertir DTOs a entidades de dominio
+  - Separados de modelos de dominio para permitir evolución independiente
 
 - **DataStores** (`Data/DataStores/`):
-  - Different data source implementations following OCP
-  - `RemoteMovieDataStore`: Fetches from TMDB API via Alamofire, returns `Single<T>`
-  - `LocalMovieDataStore`: Retrieves from CoreData cache with 24-hour TTL
-  - `MockMovieDataStore`: Provides sample data for testing
-  - `FirebaseConfigDataStore`: Fetches Remote Config from Firebase
-  - All conform to `MovieDataStoreProtocol` (LSP - interchangeable)
+  - Diferentes implementaciones de fuentes de datos siguiendo OCP
+  - `RemoteMovieDataStore`: Obtiene de la API TMDB a través de Alamofire, retorna `Single<T>`
+  - `LocalMovieDataStore`: Recupera del caché CoreData con TTL de 24 horas
+  - `MockMovieDataStore`: Proporciona datos de ejemplo para pruebas
+  - `FirebaseConfigDataStore`: Obtiene Remote Config de Firebase
+  - Todos se ajustan a `MovieDataStoreProtocol` (LSP - intercambiables)
 
-- **Repositories** (`Data/Repositories/`):
-  - Concrete implementations of domain repository protocols
-  - `MovieRepository`: Coordinates between multiple data sources
-  - Implements cache-first strategy with background refresh
-  - Uses `Single.zip()` to parallelize 4 category fetches
-  - Converts DTOs to Domain entities using mapping extensions
+- **Repositorios** (`Data/Repositories/`):
+  - Implementaciones concretas de protocolos de repositorio de dominio
+  - `MovieRepository`: Coordina entre múltiples fuentes de datos
+  - Implementa estrategia cache-first con actualización en segundo plano
+  - Usa `Single.zip()` para paralelizar 4 obtenciones de categorías
+  - Convierte DTOs a entidades de dominio usando extensiones de mapeo
 
-#### 3. **Presentation Layer** (UI - MVP Pattern)
-Handles all user interface concerns following the MVP pattern.
+#### 3. **Capa de Presentación** (UI - Patrón MVP)
+Maneja todas las preocupaciones de interfaz de usuario siguiendo el patrón MVP.
 
-Each screen is organized with:
-- **View Protocol**: Defines what the view can do (display data, show loading, show errors)
-- **Presenter Protocol**: Defines what actions the presenter handles
-- **View Controller**: UIKit view that conforms to View Protocol
-  - Displays data received from presenter
-  - Forwards user interactions to presenter
-  - Uses XIB files (no SwiftUI, no programmatic views)
-- **Presenter**: Business logic coordinator
-  - Subscribes to use case `Single<T>` observables
-  - Transforms data for view display
-  - Handles errors and edge cases
-  - Uses `DisposeBag` for automatic memory management
-  - Uses `MainScheduler.instance` for thread-safe UI updates
+Cada pantalla está organizada con:
+- **Protocolo de Vista**: Define qué puede hacer la vista (mostrar datos, mostrar carga, mostrar errores)
+- **Protocolo de Presentador**: Define qué acciones maneja el presentador
+- **View Controller**: Vista UIKit que se ajusta al Protocolo de Vista
+  - Muestra datos recibidos del presentador
+  - Reenvía interacciones del usuario al presentador
+  - Usa archivos XIB (sin SwiftUI, sin vistas programáticas)
+- **Presentador**: Coordinador de lógica de negocio
+  - Se suscribe a observables `Single<T>` del caso de uso
+  - Transforma datos para visualización en vista
+  - Maneja errores y casos edge
+  - Usa `DisposeBag` para gestión automática de memoria
+  - Usa `MainScheduler.instance` para actualizaciones de UI thread-safe
 
-**Screens:**
-- `Splash/`: Firebase config loading, navigation to main screen
-- `Categories/`: Movie categories with nested UICollectionView/UITableView
-- `MovieDetail/`: Movie details with image carousel, cast, and recommendation
-- `Recommendation/`: Modal for movie recommendation with dynamic height
+**Pantallas:**
+- `Splash/`: Carga de configuración de Firebase, navegación a pantalla principal
+- `Categories/`: Categorías de películas con UICollectionView/UITableView anidados
+- `MovieDetail/`: Detalles de película con carrusel de imágenes, elenco y recomendación
+- `Recommendation/`: Modal para recomendación de película con altura dinámica
 
-#### 4. **Core Layer** (Shared Utilities)
-Cross-cutting concerns and shared infrastructure.
+#### 4. **Capa Core** (Utilidades Compartidas)
+Responsabilidades transversales e infraestructura compartida.
 
-- **Network** (`Core/Network/`):
-  - `NetworkService`: Alamofire-based HTTP client with generic request handling
-  - Thread-safe, reusable across all data stores
+- **Red** (`Core/Network/`):
+  - `NetworkService`: Cliente HTTP basado en Alamofire con manejo genérico de solicitudes
+  - Thread-safe, reutilizable en todos los data stores
 
-- **Cache** (`Core/Cache/`):
-  - `CacheServiceProtocol`: Abstract cache interface
-  - `CoreDataCacheService`: CoreData implementation with TTL support
-  - `ImageCacheService`: In-memory image caching for performance
+- **Caché** (`Core/Cache/`):
+  - `CacheServiceProtocol`: Interfaz de caché abstracta
+  - `CoreDataCacheService`: Implementación CoreData con soporte de TTL
+  - `ImageCacheService`: Almacenamiento en caché de imágenes en memoria para rendimiento
 
-- **Extensions** (`Core/Extensions/`):
-  - `UIViewController+Loading.swift`: Loading indicators and toast notifications
-  - `String+HTML.swift`: HTML parsing for movie descriptions
-  - `UIImageView+Alamofire.swift`: Async image loading with Alamofire
+- **Extensiones** (`Core/Extensions/`):
+  - `UIViewController+Loading.swift`: Indicadores de carga y notificaciones toast
+  - `String+HTML.swift`: Análisis de HTML para descripciones de películas
+  - `UIImageView+Alamofire.swift`: Carga asincrónica de imágenes con Alamofire
 
-- **Utilities** (`Core/Utils/`):
-  - `NetworkReachability`: Detects online/offline status for cache-first UX
+- **Utilidades** (`Core/Utils/`):
+  - `NetworkReachability`: Detecta estado en línea/fuera de línea para UX cache-first
 
-### Project Structure
+### Estructura del Proyecto
 
 ```
 IMDUMB/
-├── Domain/                          # 🎯 Business Logic (Pure Swift)
-│   ├── Entities/                   # Business models
+├── Domain/                          # 🎯 Lógica de Negocio (Swift Puro)
+│   ├── Entities/                   # Modelos de negocio
 │   │   ├── Movie.swift
 │   │   ├── Actor.swift
 │   │   └── Category.swift
-│   ├── Repositories/               # Abstract data interfaces
+│   ├── Repositories/               # Interfaces de datos abstractas
 │   │   └── MovieRepositoryProtocol.swift
-│   └── UseCases/                   # Business operations
+│   └── UseCases/                   # Operaciones de negocio
 │       ├── GetCategoriesUseCase.swift
 │       ├── GetMovieDetailsUseCase.swift
 │       └── LoadConfigurationUseCase.swift
 │
-├── Data/                            # 💾 Data Management
-│   ├── DTOs/                       # Data transfer objects
+├── Data/                            # 💾 Gestión de Datos
+│   ├── DTOs/                       # Objetos de transferencia de datos
 │   │   ├── MovieDTO.swift
 │   │   ├── ActorDTO.swift
 │   │   ├── CachedDTOs.swift
-│   │   └── DTO+Mapping.swift       # DTO → Domain mapping
-│   ├── DataStores/                 # Data source implementations
+│   │   └── DTO+Mapping.swift       # Mapeo DTO → Dominio
+│   ├── DataStores/                 # Implementaciones de fuentes de datos
 │   │   ├── MovieDataStoreProtocol.swift
-│   │   ├── RemoteMovieDataStore.swift    # Network (Alamofire)
-│   │   ├── LocalMovieDataStore.swift     # Cache (CoreData)
-│   │   ├── MockMovieDataStore.swift      # Testing
+│   │   ├── RemoteMovieDataStore.swift    # Red (Alamofire)
+│   │   ├── LocalMovieDataStore.swift     # Caché (CoreData)
+│   │   ├── MockMovieDataStore.swift      # Pruebas
 │   │   └── FirebaseConfigDataStore.swift # Remote Config
-│   └── Repositories/               # Repository implementations
-│       └── MovieRepository.swift   # Cache-first + parallel fetching
+│   └── Repositories/               # Implementaciones de repositorio
+│       └── MovieRepository.swift   # Cache-first + obtención paralela
 │
-├── Presentation/                    # 🎨 UI Layer (MVP Pattern)
+├── Presentation/                    # 🎨 Capa de UI (Patrón MVP)
 │   ├── Splash/
-│   │   ├── SplashViewController.swift     # View (XIB)
-│   │   ├── SplashPresenter.swift          # Presenter (RxSwift)
-│   │   └── SplashContracts.swift          # View/Presenter protocols
+│   │   ├── SplashViewController.swift     # Vista (XIB)
+│   │   ├── SplashPresenter.swift          # Presentador (RxSwift)
+│   │   └── SplashContracts.swift          # Protocolos Vista/Presentador
 │   ├── Categories/
-│   │   ├── CategoriesViewController.swift # View (XIB)
-│   │   ├── CategoriesPresenter.swift      # Presenter (RxSwift + offline detection)
+│   │   ├── CategoriesViewController.swift # Vista (XIB)
+│   │   ├── CategoriesPresenter.swift      # Presentador (RxSwift + detección de sin conexión)
 │   │   ├── CategoryCollectionViewCell.swift
 │   │   └── MovieTableViewCell.swift
 │   ├── MovieDetail/
@@ -184,9 +184,9 @@ IMDUMB/
 │   └── Recommendation/
 │       └── RecommendationViewController.swift
 │
-├── Core/                            # 🔧 Shared Infrastructure
+├── Core/                            # 🔧 Infraestructura Compartida
 │   ├── Network/
-│   │   └── NetworkService.swift    # Alamofire HTTP client
+│   │   └── NetworkService.swift    # Cliente HTTP Alamofire
 │   ├── Cache/
 │   │   ├── CacheServiceProtocol.swift
 │   │   ├── CoreDataCacheService.swift
@@ -200,8 +200,8 @@ IMDUMB/
 │   └── Protocols/
 │       └── BaseViewProtocol.swift
 │
-└── Packages/                        # 📦 Swift Packages
-    └── IMDUMBPersistence/          # CoreData persistence module
+└── Packages/                        # 📦 Paquetes Swift
+    └── IMDUMBPersistence/          # Módulo de persistencia CoreData
         ├── Sources/
         │   └── IMDUMBPersistence/
         │       ├── CoreDataModels.xcdatamodeld
@@ -211,51 +211,51 @@ IMDUMB/
         └── Tests/
 ```
 
-### Data Flow with RxSwift
+### Flujo de Datos con RxSwift
 
-The application uses **RxSwift** for reactive, declarative data flow:
+La aplicación utiliza **RxSwift** para flujo de datos reactivo y declarativo:
 
 ```
 ┌─────────────┐
-│    View     │  User taps "Load Movies"
+│    Vista    │  Usuario toca "Cargar Películas"
 └──────┬──────┘
        │ viewDidLoad()
        ▼
 ┌─────────────┐
-│  Presenter  │  getCategoriesUseCase.execute()
+│ Presentador │  getCategoriesUseCase.execute()
 └──────┬──────┘       .observe(on: MainScheduler.instance)
        │              .subscribe(onSuccess: { view.display($0) })
        │              .disposed(by: disposeBag)
        ▼
 ┌─────────────┐
-│   UseCase   │  repository.getCategories() → Single<[Category]>
+│  Caso Uso   │  repository.getCategories() → Single<[Category]>
 └──────┬──────┘       .map { $0.filter { !$0.movies.isEmpty } }
        │
        ▼
 ┌─────────────┐
-│ Repository  │  1. Try cache: localDataStore.fetchMovies()
+│ Repositorio │  1. Intentar caché: localDataStore.fetchMovies()
 └──────┬──────┘                   .catch { remoteDataStore.fetchMovies() }
-       │         2. Parallel fetch 4 categories: Single.zip(...)
-       │         3. Background refresh: .do(onSuccess: { refresh() })
-       │         4. Map DTOs → Domain: dtos.map { $0.toDomain() }
+       │         2. Obtención paralela 4 categorías: Single.zip(...)
+       │         3. Actualización en segundo plano: .do(onSuccess: { refresh() })
+       │         4. Mapear DTOs → Dominio: dtos.map { $0.toDomain() }
        ▼
 ┌─────────────┐
-│  DataStore  │  RemoteDataStore: Alamofire HTTP request → Single<[MovieDTO]>
-└──────┬──────┘  LocalDataStore:  CoreData fetch → Single<[MovieDTO]>
+│  DataStore  │  RemoteDataStore: Solicitud HTTP Alamofire → Single<[MovieDTO]>
+└──────┬──────┘  LocalDataStore:  Búsqueda CoreData → Single<[MovieDTO]>
        │
        ▼
 ┌─────────────┐
-│  Network /  │  TMDB API or CoreData
-│   Cache     │
+│    Red /    │  API TMDB o CoreData
+│   Caché     │
 └─────────────┘
 
-Response flows back up through Single chain:
-MovieDTO[] → (mapping) → Movie[] → Category[] → View displays
+La respuesta fluye hacia arriba a través de la cadena Single:
+MovieDTO[] → (mapeo) → Movie[] → Category[] → Vista muestra
 ```
 
-### Reactive Patterns Used
+### Patrones Reactivos Utilizados
 
-**1. Single for One-Time Operations:**
+**1. Single para Operaciones de Una Sola Vez:**
 ```swift
 func getCategories() -> Single<[Category]> {
     return repository.getCategories()
@@ -263,374 +263,373 @@ func getCategories() -> Single<[Category]> {
 }
 ```
 
-**2. Parallel Execution with Single.zip:**
+**2. Ejecución Paralela con Single.zip:**
 ```swift
 let singles = [popular, topRated, upcoming, nowPlaying].map { endpoint in
     dataStore.fetchMovies(endpoint: endpoint)
 }
-Single.zip(singles) // Runs all 4 fetches in parallel
+Single.zip(singles) // Ejecuta todas las 4 obtenciones en paralelo
 ```
 
-**3. Cache-First with Fallback:**
+**3. Cache-First con Fallback:**
 ```swift
 localDataStore.fetchMovies(endpoint)
-    .do(onSuccess: { refreshInBackground() })  // Background refresh
-    .catch { remoteDataStore.fetchMovies(endpoint) }  // Fallback to network
+    .do(onSuccess: { refreshInBackground() })  // Actualización en segundo plano
+    .catch { remoteDataStore.fetchMovies(endpoint) }  // Fallback a red
 ```
 
-**4. Thread-Safe UI Updates:**
+**4. Actualizaciones de UI Thread-Safe:**
 ```swift
 useCase.execute()
-    .observe(on: MainScheduler.instance)  // Ensures UI updates on main thread
+    .observe(on: MainScheduler.instance)  // Asegura actualizaciones de UI en hilo principal
     .subscribe(onSuccess: { view.display($0) })
-    .disposed(by: disposeBag)  // Auto-cleanup on deinit
+    .disposed(by: disposeBag)  // Limpieza automática en deinit
 ```
 
-**5. Non-Critical Operations:**
+**5. Operaciones No Críticas:**
 ```swift
 fetchMovieCredits(movieId)
-    .catchAndReturn([])  // Continue with empty array if credits fail
+    .catchAndReturn([])  // Continuar con matriz vacía si los créditos fallan
 ```
 
-### Offline Support Flow
+### Flujo de Soporte sin Conexión
 
 ```
-User opens app (offline)
+Usuario abre la aplicación (sin conexión)
     ↓
 NetworkReachability.shared.isReachable → false
     ↓
-Repository tries LocalDataStore first (cache-first)
+Repositorio intenta LocalDataStore primero (cache-first)
     ↓
-Cache hit → Returns cached data
+Acierto en caché → Retorna datos en caché
     ↓
-Presenter detects offline: if !isReachable { view.showToast("Offline") }
+Presentador detecta sin conexión: if !isReachable { view.showToast("Sin conexión") }
     ↓
-View displays cached data + toast notification
+Vista muestra datos en caché + notificación toast
     ↓
-When online: Background refresh updates cache
+Cuando está en línea: Actualización en segundo plano actualiza caché
 ```
 
-## 🎯 SOLID Principles Implementation
+## 🎯 Implementación de Principios SOLID
 
-The codebase demonstrates SOLID principles throughout:
+El código demuestra principios SOLID a través de:
 
-### 1. **Single Responsibility Principle (SRP)**
-- **Location**: `IMDUMB/Domain/Entities/Movie.swift:5`
+### 1. **Principio de Responsabilidad Única (SRP)**
+- **Ubicación**: `IMDUMB/Domain/Entities/Movie.swift:5`
   ```swift
-  // SOLID: Single Responsibility Principle - This struct only represents movie data
+  // SOLID: Principio de Responsabilidad Única - Esta struct solo representa datos de películas
   struct Movie { ... }
   ```
-- Each class/struct has one clear responsibility
-- Presenters handle business logic, Views handle UI, UseCases handle domain operations
+- Cada clase/struct tiene una responsabilidad clara
+- Los presentadores manejan lógica de negocio, las vistas manejan UI, los casos de uso manejan operaciones de dominio
 
-### 2. **Open/Closed Principle (OCP)**
-- **Location**: `IMDUMB/Data/DataStores/MockMovieDataStore.swift:5`
+### 2. **Principio Abierto/Cerrado (OCP)**
+- **Ubicación**: `IMDUMB/Data/DataStores/MockMovieDataStore.swift:5`
   ```swift
-  // SOLID: Open/Closed Principle - Open for extension (different implementations), closed for modification
+  // SOLID: Principio Abierto/Cerrado - Abierto para extensión (diferentes implementaciones), cerrado para modificación
   protocol MovieDataStoreProtocol { ... }
   ```
-- Data stores can be extended with new implementations without modifying existing code
-- Protocol-based design allows for multiple implementations (Remote, Mock, Local)
+- Los data stores pueden extenderse con nuevas implementaciones sin modificar código existente
+- El diseño basado en protocolos permite múltiples implementaciones (Remoto, Mock, Local)
 
-### 3. **Liskov Substitution Principle (LSP)**
-- **Location**: `IMDUMB/Data/DataStores/MockMovieDataStore.swift:7`
+### 3. **Principio de Sustitución de Liskov (LSP)**
+- **Ubicación**: `IMDUMB/Data/DataStores/MockMovieDataStore.swift:7`
   ```swift
-  // SOLID: Liskov Substitution Principle - Can substitute RemoteMovieDataStore without breaking functionality
+  // SOLID: Principio de Sustitución de Liskov - Puede sustituir RemoteMovieDataStore sin romper funcionalidad
   class MockMovieDataStore: MovieDataStoreProtocol { ... }
   ```
-- MockMovieDataStore can replace RemoteMovieDataStore seamlessly
-- All DataStore implementations are interchangeable
+- MockMovieDataStore puede reemplazar RemoteMovieDataStore sin problemas
+- Todas las implementaciones de DataStore son intercambiables
 
-### 4. **Interface Segregation Principle (ISP)**
-- **Location**: `IMDUMB/Domain/Repositories/MovieRepositoryProtocol.swift:5`
+### 4. **Principio de Segregación de Interfaz (ISP)**
+- **Ubicación**: `IMDUMB/Domain/Repositories/MovieRepositoryProtocol.swift:5`
   ```swift
-  // SOLID: Interface Segregation Principle - Specific interface for movie operations
+  // SOLID: Principio de Segregación de Interfaz - Interfaz específica para operaciones de películas
   protocol MovieRepositoryProtocol { ... }
   ```
-- Protocols are focused and specific to their domain
-- BaseViewProtocol provides minimal interface for views
+- Los protocolos están enfocados y específicos a su dominio
+- BaseViewProtocol proporciona interfaz mínima para vistas
 
-### 5. **Dependency Inversion Principle (DIP)**
-- **Location**: `IMDUMB/Domain/UseCases/GetCategoriesUseCase.swift:9`
+### 5. **Principio de Inversión de Dependencias (DIP)**
+- **Ubicación**: `IMDUMB/Domain/UseCases/GetCategoriesUseCase.swift:9`
   ```swift
-  // SOLID: Dependency Inversion - Depends on abstraction (protocol), not concrete implementation
+  // SOLID: Inversión de Dependencias - Depende de abstracción (protocolo), no de implementación concreta
   init(repository: MovieRepositoryProtocol) { ... }
   ```
-- High-level modules depend on abstractions (protocols)
-- Dependency injection is used throughout the app
+- Módulos de alto nivel dependen de abstracciones (protocolos)
+- La inyección de dependencias se utiliza en toda la aplicación
 
-## 🛠️ Tech Stack
+## 🛠️ Stack Tecnológico
 
-- **Language**: Swift 5.0
-- **Minimum iOS Version**: 15.0
-- **UI Framework**: UIKit with XIB files (no SwiftUI, no programmatic views)
-- **Architecture**: MVP + Clean Architecture
-- **Reactive Programming**: RxSwift 6.9.1 for asynchronous operations and data streams
-- **Networking**: Alamofire 5.10.2 for HTTP requests and image loading
-- **Dependency Management**: Swift Package Manager (SPM)
-- **Persistence**: CoreData for offline caching (IMDUMBPersistence package)
-- **Firebase**: Firebase Remote Config for dynamic configuration
+- **Lenguaje**: Swift 5.0
+- **Versión Mínima de iOS**: 15.0
+- **Framework de UI**: UIKit con archivos XIB (sin SwiftUI, sin vistas programáticas)
+- **Arquitectura**: MVP + Arquitectura Limpia
+- **Programación Reactiva**: RxSwift 6.9.1 para operaciones asincrónicas y flujos de datos
+- **Redes**: Alamofire 5.10.2 para solicitudes HTTP y carga de imágenes
+- **Gestión de Dependencias**: Swift Package Manager (SPM)
+- **Persistencia**: CoreData para almacenamiento en caché sin conexión (paquete IMDUMBPersistence)
+- **Firebase**: Firebase Remote Config para configuración dinámica
 
-## 📦 Dependencies
+## 📦 Dependencias
 
-Dependencies are managed via Swift Package Manager:
+Las dependencias se gestionan a través de Swift Package Manager:
 
-- **Arkana** - Secrets encryption and management (Ruby gem)
-- **Alamofire 5.10.2** - HTTP networking and async image loading
-- **RxSwift 6.9.1** - Reactive programming for async operations
-  - RxSwift - Core reactive extensions
-  - RxCocoa - UIKit reactive extensions
-  - RxBlocking - Synchronous testing support
-- **Firebase iOS SDK 11.15.0** - Remote Config for dynamic configuration
-- **IMDUMBPersistence** - Local Swift Package for CoreData caching
+- **Arkana** - Encriptación y gestión de secretos (gema Ruby)
+- **Alamofire 5.10.2** - Redes HTTP y carga de imágenes asincrónicas
+- **RxSwift 6.9.1** - Programación reactiva para operaciones asincrónicas
+  - RxSwift - Extensiones reactivas principales
+  - RxCocoa - Extensiones reactivas UIKit
+  - RxBlocking - Soporte de pruebas sincrónicas
+- **Firebase iOS SDK 11.15.0** - Remote Config para configuración dinámica
+- **IMDUMBPersistence** - Paquete Swift local para almacenamiento en caché CoreData
 
-## 🚀 Installation & Setup
+## 🚀 Instalación y Configuración
 
-### Prerequisites
+### Requisitos Previos
 
-- Xcode 16.0 or later
-- macOS with iOS development tools
+- Xcode 16.0 o superior
+- macOS con herramientas de desarrollo iOS
 - Git
-- Ruby (for Arkana - comes with macOS)
+- Ruby (para Arkana - viene con macOS)
 
-### Steps
+### Pasos
 
-1. **Clone the repository**
+1. **Clonar el repositorio**
    ```bash
    git clone https://github.com/jesersu/IMDUMP.git
    cd IMDUMB
    ```
 
-2. **Install Arkana** (for encrypted secrets)
+2. **Instalar Arkana** (para secretos encriptados)
    ```bash
    gem install arkana
    ```
 
-3. **Configure API Keys** (Recommended - Use Arkana)
+3. **Configurar Claves API** (Recomendado - Usar Arkana)
    ```bash
-   # Copy the sample environment file
+   # Copiar el archivo de entorno de ejemplo
    cp .env.sample .env
 
-   # Edit .env and add your TMDB API key
-   # Get your key from: https://www.themoviedb.org/settings/api
+   # Editar .env y agregar tu clave API de TMDB
+   # Obtén tu clave de: https://www.themoviedb.org/settings/api
 
-   # Generate encrypted secrets
+   # Generar secretos encriptados
    arkana -e .env
    ```
 
-4. **Open the project**
+4. **Abrir el proyecto**
    ```bash
    open IMDUMB.xcodeproj
    ```
 
-4. **Configure Firebase** (Required for full functionality)
-   - Download `GoogleService-Info.plist` from Firebase Console
-   - Add it to the project root in Xcode
-   - Set up Remote Config parameters in Firebase Console
-   - Note: The file is excluded from git via .gitignore
+5. **Configurar Firebase** (Requerido para funcionalidad completa)
+   - Descargar `GoogleService-Info.plist` desde la Consola de Firebase
+   - Agregarlo a la raíz del proyecto en Xcode
+   - Configurar parámetros de Remote Config en la Consola de Firebase
+   - Nota: El archivo está excluido de git a través de .gitignore
 
-5. **Build and Run**
-   - Select a simulator or device
-   - Press `Cmd + R` or click the Run button
-   - The app will launch with the splash screen
+6. **Compilar y Ejecutar**
+   - Seleccionar un simulador o dispositivo
+   - Presionar `Cmd + R` o hacer clic en el botón Ejecutar
+   - La aplicación se iniciará con la pantalla de presentación
 
-### Running with Mock Data
+### Ejecutar con Datos Mock
 
-The app is currently configured to use `MockMovieDataStore` for development. To test without API keys:
+La aplicación actualmente está configurada para usar `MockMovieDataStore` para desarrollo. Para probar sin claves API:
 
-- File: `IMDUMB/Presentation/Categories/CategoriesViewController.swift:59`
-- The app uses mock data by default, so it works immediately without configuration
+- Archivo: `IMDUMB/Presentation/Categories/CategoriesViewController.swift:59`
+- La aplicación utiliza datos mock por defecto, por lo que funciona inmediatamente sin configuración
 
-### Switching to Real API
+### Cambiar a API Real
 
-To use the real TMDB API:
+Para utilizar la API real de TMDB:
 
-1. Get a free API key from [TMDB](https://www.themoviedb.org/settings/api)
-2. Update the NetworkService with your API key
-3. Change data store in `CategoriesViewController.swift:59`:
+1. Obtener una clave API gratuita de [TMDB](https://www.themoviedb.org/settings/api)
+2. Actualizar el NetworkService con tu clave API
+3. Cambiar data store en `CategoriesViewController.swift:59`:
    ```swift
-   // Change from:
+   // Cambiar de:
    let dataStore = MockMovieDataStore()
-   // To:
+   // A:
    let dataStore = RemoteMovieDataStore()
    ```
 
-## 📡 API Endpoints
+## 📡 Puntos Finales de API
 
-The app uses The Movie Database (TMDB) API:
+La aplicación utiliza The Movie Database (TMDB) API:
 
-### Base URL
+### URL Base
 ```
 https://api.themoviedb.org/3
 ```
 
-### Endpoints Used
+### Puntos Finales Utilizados
 
-| Endpoint | Description |
+| Punto Final | Descripción |
 |----------|-------------|
-| `/movie/popular` | Popular movies |
-| `/movie/top_rated` | Top rated movies |
-| `/movie/upcoming` | Upcoming movies |
-| `/movie/now_playing` | Now playing movies |
-| `/movie/{id}` | Movie details |
-| `/movie/{id}/credits` | Movie cast |
-| `/movie/{id}/images` | Movie images |
+| `/movie/popular` | Películas populares |
+| `/movie/top_rated` | Películas mejor valoradas |
+| `/movie/upcoming` | Películas próximas |
+| `/movie/now_playing` | Películas en cines ahora |
+| `/movie/{id}` | Detalles de película |
+| `/movie/{id}/credits` | Elenco de película |
+| `/movie/{id}/images` | Imágenes de película |
 
-## 🧪 Testing
+## 🧪 Pruebas
 
-### DataStore Implementations
+### Implementaciones de DataStore
 
-The app includes multiple DataStore implementations for testing:
+La aplicación incluye múltiples implementaciones de DataStore para pruebas:
 
-- **MockMovieDataStore**: Provides sample data without network calls
-- **RemoteMovieDataStore**: Fetches data from TMDB API
-- **LocalDataStore**: (Future) For offline caching with CoreData/Realm
+- **MockMovieDataStore**: Proporciona datos de ejemplo sin llamadas de red
+- **RemoteMovieDataStore**: Obtiene datos de la API TMDB
+- **LocalDataStore**: (Futuro) Para almacenamiento en caché sin conexión con CoreData/Realm
 
-### Unit Tests
+### Pruebas Unitarias
 
-The project includes comprehensive unit tests covering core components:
+El proyecto incluye pruebas unitarias completas que cubren componentes principales:
 
-**Test Coverage:**
-- ✅ **Use Cases** (8 tests): GetCategoriesUseCase, GetMovieDetailsUseCase
-- ✅ **Repositories** (4 tests): MovieRepository DTO mapping and error handling
-- ✅ **Presenters** (4 tests): CategoriesPresenter view lifecycle and state management
-- ✅ **DataStores** (8 tests): MockMovieDataStore data quality validation
-- ✅ **Extensions** (10 tests): String+HTML parsing and edge cases
+**Cobertura de Pruebas:**
+- ✅ **Casos de Uso** (8 pruebas): GetCategoriesUseCase, GetMovieDetailsUseCase
+- ✅ **Repositorios** (4 pruebas): Mapeo DTO de MovieRepository y manejo de errores
+- ✅ **Presentadores** (4 pruebas): Ciclo de vida de vista de CategoriesPresenter y gestión de estado
+- ✅ **DataStores** (8 pruebas): Validación de calidad de datos de MockMovieDataStore
+- ✅ **Extensiones** (10 pruebas): Análisis de String+HTML y casos edge
 
-**Total: 34 unit tests**
+**Total: 34 pruebas unitarias**
 
-**Running Tests:**
+**Ejecutar Pruebas:**
 
-1. In Xcode: Press `Cmd + U`
-2. Command line:
+1. En Xcode: Presionar `Cmd + U`
+2. Línea de comandos:
    ```bash
    xcodebuild test -project IMDUMB.xcodeproj -scheme IMDUMB -destination 'platform=iOS Simulator,name=iPhone 15'
    ```
 
-**Test Files Location:** `IMDUMBTests/`
+**Ubicación de Archivos de Prueba:** `IMDUMBTests/`
 
-**Note:** To run tests in Xcode, you need to add the IMDUMBTests target to the project first (test files are included in the repository).
+**Nota:** Para ejecutar pruebas en Xcode, necesitas agregar el objetivo IMDUMBTests al proyecto primero (los archivos de prueba están incluidos en el repositorio).
 
-## 📖 Project Structure Details
+## 📖 Detalles de Estructura del Proyecto
 
-### Layers
+### Capas
 
-1. **Domain Layer**: Pure business logic, no dependencies on frameworks
-2. **Data Layer**: Implements data fetching and mapping
-3. **Presentation Layer**: UI components using MVP pattern
-4. **Core Layer**: Shared utilities and extensions
+1. **Capa de Dominio**: Lógica de negocio pura, sin dependencias en frameworks
+2. **Capa de Datos**: Implementa obtención de datos y mapeo
+3. **Capa de Presentación**: Componentes de UI usando patrón MVP
+4. **Capa Core**: Utilidades compartidas y extensiones
 
-### Key Design Patterns
+### Patrones de Diseño Clave
 
-- **MVP Pattern**: Separation of View and business logic
-- **Repository Pattern**: Abstract data sources
-- **Dependency Injection**: Through initializers
-- **Protocol-Oriented Programming**: Extensive use of protocols
+- **Patrón MVP**: Separación de Vista y lógica de negocio
+- **Patrón de Repositorio**: Abstraer fuentes de datos
+- **Inyección de Dependencias**: A través de inicializadores
+- **Programación Orientada a Protocolos**: Uso extensivo de protocolos
 
-## 🎨 UI Components
+## 🎨 Componentes de UI
 
-All UI is built with **XIB files**:
+Toda la UI se construye con **archivos XIB**:
 
-- ✅ No SwiftUI
-- ✅ No programmatic views
-- ✅ Interface Builder for all screens
-- ✅ Custom reusable cells
+- ✅ Sin SwiftUI
+- ✅ Sin vistas programáticas
+- ✅ Interface Builder para todas las pantallas
+- ✅ Celdas reutilizables personalizadas
 
-## 🚀 CI/CD & Automation
+## 🚀 CI/CD y Automatización
 
 ### Fastlane
 
-The project uses Fastlane for iOS automation. Available lanes:
+El proyecto utiliza Fastlane para automatización iOS. Lanes disponibles:
 
-**Setup & Dependencies:**
+**Configuración y Dependencias:**
 ```bash
-bundle exec fastlane setup              # Setup project and dependencies
-bundle exec fastlane update_dependencies # Update SPM dependencies
+bundle exec fastlane setup              # Configurar proyecto y dependencias
+bundle exec fastlane update_dependencies # Actualizar dependencias SPM
 ```
 
-**Build:**
+**Compilación:**
 ```bash
-bundle exec fastlane build_debug        # Build Debug configuration
-bundle exec fastlane build_release      # Build Release configuration
-bundle exec fastlane archive            # Create IPA archive
+bundle exec fastlane build_debug        # Compilar configuración Debug
+bundle exec fastlane build_release      # Compilar configuración Release
+bundle exec fastlane archive            # Crear archivo IPA
 ```
 
-**Testing:**
+**Pruebas:**
 ```bash
-bundle exec fastlane test               # Run all unit tests
-bundle exec fastlane test_with_coverage # Run tests with code coverage
+bundle exec fastlane test               # Ejecutar todas las pruebas unitarias
+bundle exec fastlane test_with_coverage # Ejecutar pruebas con cobertura de código
 ```
 
 **CI/CD:**
 ```bash
-bundle exec fastlane ci                 # Full CI pipeline (lint, test, build)
-bundle exec fastlane ci_quick           # Quick CI (test + build)
+bundle exec fastlane ci                 # Pipeline CI completo (lint, test, build)
+bundle exec fastlane ci_quick           # CI rápido (test + build)
 ```
 
-**Utilities:**
+**Utilidades:**
 ```bash
-bundle exec fastlane clean              # Clean build artifacts
-bundle exec fastlane lint               # Run SwiftLint
+bundle exec fastlane clean              # Limpiar artefactos de compilación
+bundle exec fastlane lint               # Ejecutar SwiftLint
 ```
 
-### GitHub Actions Workflows
+### Flujos de Trabajo de GitHub Actions
 
-The project includes automated CI/CD workflows:
+El proyecto incluye flujos de trabajo automatizados de CI/CD:
 
-**1. CI Workflow** (`.github/workflows/ci.yml`)
-- Runs on: Push to main/develop, Pull Requests
-- Steps: Install dependencies → Generate secrets → Run tests → Build release
-- Uploads: Test results, code coverage reports
+**1. Flujo de Trabajo CI** (`.github/workflows/ci.yml`)
+- Se ejecuta en: Push a main/develop, Pull Requests
+- Pasos: Instalar dependencias → Generar secretos → Ejecutar pruebas → Compilación de lanzamiento
+- Carga: Resultados de pruebas, informes de cobertura de código
 
-**2. PR Check** (`.github/workflows/pr-check.yml`)
-- Runs on: Pull request events
-- Quick validation and automatic PR comments
+**2. Verificación de PR** (`.github/workflows/pr-check.yml`)
+- Se ejecuta en: Eventos de pull request
+- Validación rápida y comentarios automáticos de PR
 
-**3. Build** (`.github/workflows/build.yml`)
-- Runs on: Tags (`v*`), Manual trigger
-- Creates release archives and GitHub releases
+**3. Compilación** (`.github/workflows/build.yml`)
+- Se ejecuta en: Etiquetas (`v*`), Activación manual
+- Crea archivos de liberación y lanzamientos de GitHub
 
-**4. Dependency Update** (`.github/workflows/dependency-update.yml`)
-- Runs on: Weekly schedule (Mondays), Manual trigger
-- Auto-creates PRs for dependency updates
+**4. Actualización de Dependencias** (`.github/workflows/dependency-update.yml`)
+- Se ejecuta en: Horario semanal (lunes), Activación manual
+- Auto-crea PRs para actualizaciones de dependencias
 
-### Setting Up CI/CD
+### Configurar CI/CD
 
-**1. Install Fastlane:**
+**1. Instalar Fastlane:**
 ```bash
 bundle install
 ```
 
-**2. Setup Secrets (for CI):**
+**2. Configurar Secretos (para CI):**
 
-Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
-- `TMDB_API_KEY`: Your TMDB API key
-- `FIREBASE_API_KEY`: Your Firebase API key
+Agregar estos secretos a tu repositorio de GitHub (Configuración → Secretos y variables → Acciones):
+- `TMDB_API_KEY`: Tu clave API de TMDB
+- `FIREBASE_API_KEY`: Tu clave API de Firebase
 
-**3. Run Locally:**
+**3. Ejecutar Localmente:**
 ```bash
-# First time setup
+# Primera vez configuración
 bundle exec fastlane setup
 
-# Run tests
+# Ejecutar pruebas
 bundle exec fastlane test
 
-# Full CI check
+# Verificación CI completa
 bundle exec fastlane ci
 ```
 
+## 📝 Notas Adicionales
 
-## 📝 Additional Notes
+### Configuración de Firebase
 
-### Firebase Configuration
-
-The app reads configuration from Firebase on startup. Mock implementation returns:
+La aplicación lee configuración desde Firebase al inicio. La implementación mock retorna:
 
 ```json
 {
   "api_base_url": "https://api.themoviedb.org/3",
   "api_key": "YOUR_TMDB_API_KEY",
-  "welcome_message": "Welcome to IMDUMB!",
+  "welcome_message": "¡Bienvenido a IMDUMB!",
   "enable_features": {
     "dark_mode": true,
     "recommendations": true,
@@ -639,11 +638,10 @@ The app reads configuration from Firebase on startup. Mock implementation return
 }
 ```
 
-### Image Loading
+### Carga de Imágenes
 
-Images are loaded asynchronously using URLSession. For production, consider using a caching library like Kingfisher or SDWebImage.
+Las imágenes se cargan de forma asincrónica usando URLSession. Para producción, considera usar una librería de almacenamiento en caché como Kingfisher o SDWebImage.
 
-### HTML Rendering
+### Representación de HTML
 
-Movie descriptions support HTML formatting through `String+HTML.swift` extension.
-
+Las descripciones de películas soportan formato HTML a través de la extensión `String+HTML.swift`.
