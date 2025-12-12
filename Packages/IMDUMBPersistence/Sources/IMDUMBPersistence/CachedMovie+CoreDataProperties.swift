@@ -55,6 +55,6 @@ public extension CachedMovie {
 
 }
 
-public extension CachedMovie : Identifiable {
+extension CachedMovie : Identifiable {
 
 }

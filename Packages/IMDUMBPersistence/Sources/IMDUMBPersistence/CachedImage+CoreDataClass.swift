@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
 
-public @objc(CachedImage)
+@objc(CachedImage)
 public class CachedImage: NSManagedObject {
 }

@@ -1,9 +1,11 @@
 import Foundation
+import RxSwift
 
 // MARK: - Categories Presenter
 class CategoriesPresenter: CategoriesPresenterProtocol {
     weak var view: CategoriesViewProtocol?
     private let getCategoriesUseCase: GetCategoriesUseCase
+    private let disposeBag = DisposeBag()
 
     init(view: CategoriesViewProtocol, getCategoriesUseCase: GetCategoriesUseCase) {
         self.view = view
@@ -11,20 +13,31 @@ class CategoriesPresenter: CategoriesPresenterProtocol {
     }
 
     func viewDidLoad() {
+        // Check network status before loading
+        let isOffline = !NetworkReachability.shared.isReachable
+
         view?.showLoading()
 
-        getCategoriesUseCase.execute { [weak self] result in
-            DispatchQueue.main.async {
-                self?.view?.hideLoading()
-
-                switch result {
-                case .success(let categories):
+        getCategoriesUseCase.execute()
+            .observe(on: MainScheduler.instance)
+            .do(
+                onSuccess: { [weak self] _ in self?.view?.hideLoading() },
+                onError: { [weak self] _ in self?.view?.hideLoading() }
+            )
+            .subscribe(
+                onSuccess: { [weak self] categories in
                     self?.view?.displayCategories(categories)
-                case .failure(let error):
+
+                    // Show toast if displaying cached data while offline
+                    if isOffline {
+                        self?.view?.showToast("You're offline - showing cached data")
+                    }
+                },
+                onFailure: { [weak self] error in
                     self?.view?.showError("Failed to load categories: \(error.localizedDescription)")
                 }
-            }
-        }
+            )
+            .disposed(by: disposeBag)
     }
 
     func didSelectMovie(_ movie: Movie) {

@@ -19,19 +19,19 @@ struct MovieDTO: Codable {
         case releaseDate = "release_date"
     }
 
-    func toDomain(images: [String] = [], cast: [Actor] = []) -> Movie {
-        return Movie(
-            id: id,
-            title: title,
-            overview: overview,
-            posterPath: posterPath,
-            backdropPath: backdropPath,
-            voteAverage: voteAverage,
-            releaseDate: releaseDate ?? "",
-            images: images,
-            cast: cast
-        )
-    }
+//    func toDomain(images: [String] = [], cast: [Actor] = []) -> Movie {
+//        return Movie(
+//            id: id,
+//            title: title,
+//            overview: overview,
+//            posterPath: posterPath,
+//            backdropPath: backdropPath,
+//            voteAverage: voteAverage,
+//            releaseDate: releaseDate ?? "",
+//            images: images,
+//            cast: cast
+//        )
+//    }
 }
 
 struct MoviesResponse: Codable {
@@ -49,14 +49,14 @@ struct ActorDTO: Codable {
         case profilePath = "profile_path"
     }
 
-    func toDomain() -> Actor {
-        return Actor(
-            id: id,
-            name: name,
-            character: character,
-            profilePath: profilePath
-        )
-    }
+//    func toDomain() -> Actor {
+//        return Actor(
+//            id: id,
+//            name: name,
+//            character: character,
+//            profilePath: profilePath
+//        )
+//    }
 }
 
 struct CreditsResponse: Codable {

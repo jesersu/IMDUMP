@@ -6,4 +6,5 @@ protocol BaseViewProtocol: AnyObject {
     func showLoading()
     func hideLoading()
     func showError(_ message: String)
+    func showToast(_ message: String)
 }

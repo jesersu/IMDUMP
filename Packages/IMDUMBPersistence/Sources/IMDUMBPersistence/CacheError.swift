@@ -13,7 +13,7 @@ public enum CacheError: Error {
 }
 
 extension CacheError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .saveFailed:
             return "Failed to save data to cache"

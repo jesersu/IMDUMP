@@ -166,6 +166,10 @@ extension MovieDetailViewController: MovieDetailViewProtocol {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+
+    func showToast(_ message: String) {
+        showToastMessage(message)
+    }
 }
 
 // MARK: - UIScrollViewDelegate

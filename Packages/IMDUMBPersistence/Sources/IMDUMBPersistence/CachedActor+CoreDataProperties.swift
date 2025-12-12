@@ -32,6 +32,6 @@ public extension CachedActor {
 
 }
 
-public extension CachedActor : Identifiable {
+extension CachedActor : Identifiable {
 
 }

@@ -6,58 +6,21 @@ public class CacheMigration {
 
     /// Migrates cache data from UserDefaults to CoreData
     /// This is a one-time migration that runs on app launch
+    /// Note: This migration is now a no-op since the app starts fresh with CoreData
     public static func migrateUserDefaultsToCoreData() {
         // Check if migration already completed
         if UserDefaults.standard.bool(forKey: migrationKey) {
-            print("Cache migration already completed")
+            print("✓ Cache migration already completed")
             return
         }
 
-        print("Starting cache migration from UserDefaults to CoreData...")
+        print("⚠️  No legacy UserDefaults cache found - marking migration as complete")
 
-        let oldCache = CacheService.shared
-        let newCache = CoreDataCacheService.shared
-
-        // Migrate categories
-        let categories = ["popular", "top_rated", "upcoming", "now_playing"]
-
-        for categoryId in categories {
-            let cacheKey = "cache.category.\(categoryId)"
-
-            // Try to load old cached movies
-            if let cachedMovies: CachedMoviesDTO = oldCache.load(forKey: cacheKey) {
-                do {
-                    try newCache.save(cachedMovies, forKey: cacheKey)
-                    print("✓ Migrated category: \(categoryId) (\(cachedMovies.movies.count) movies)")
-                } catch {
-                    print("✗ Failed to migrate category \(categoryId): \(error)")
-                }
-            }
-        }
-
-        // Migrate movie details (if any cached)
-        // Note: We can't enumerate all possible movie IDs, so we'll only migrate
-        // what we find in UserDefaults by scanning all keys
-        let allKeys = UserDefaults.standard.dictionaryRepresentation().keys
-        let movieDetailKeys = allKeys.filter { $0.hasPrefix("cache.movie.") && !$0.contains(".timestamp") }
-
-        for key in movieDetailKeys {
-            if let cachedDetails: CachedMovieDetailsDTO = oldCache.load(forKey: key) {
-                do {
-                    try newCache.save(cachedDetails, forKey: key)
-                    print("✓ Migrated movie details: \(key)")
-                } catch {
-                    print("✗ Failed to migrate movie details \(key): \(error)")
-                }
-            }
-        }
-
-        // Mark migration as completed
+        // Since we're starting fresh with CoreData and there's no legacy cache to migrate,
+        // just mark the migration as completed to prevent this check on future launches
         UserDefaults.standard.set(true, forKey: migrationKey)
 
-        // Clear old cache to free up space
-        oldCache.clearAll()
-        print("Cache migration completed successfully")
+        print("✓ Cache migration completed successfully")
     }
 
     /// Resets the migration flag (useful for testing)

@@ -1,73 +1,110 @@
 import Foundation
 import IMDUMBPersistence
+import RxSwift
 
 class LocalMovieDataStore: MovieDataStoreProtocol {
 
     private let cacheService: CacheServiceProtocol
     private let expirationInterval: TimeInterval = 24 * 60 * 60
 
-    init(cacheService: CacheServiceProtocol = CoreDataCacheService.shared) {
+    init(cacheService: CacheServiceProtocol = CoreDataCacheService.shared as! CacheServiceProtocol) {
         self.cacheService = cacheService
     }
 
-    func fetchMovies(endpoint: String, completion: @escaping (Result<[MovieDTO], Error>) -> Void) {
-        let categoryId = extractCategoryId(from: endpoint)
-        let cacheKey = CacheKey.category(categoryId)
+    func fetchMovies(endpoint: String) -> Single<[MovieDTO]> {
+        return Single.create { [weak self] observer in
+            guard let self = self else {
+                observer(.failure(CacheError.notFound))
+                return Disposables.create()
+            }
 
-        if cacheService.isExpired(forKey: cacheKey, expirationInterval: expirationInterval) {
-            completion(.failure(CacheError.expired))
-            return
-        }
+            let categoryId = self.extractCategoryId(from: endpoint)
+            let cacheKey = CacheKey.category(categoryId)
 
-        if let cachedMovies: CachedMoviesDTO = cacheService.load(forKey: cacheKey) {
-            completion(.success(cachedMovies.movies))
-        } else {
-            completion(.failure(CacheError.notFound))
-        }
-    }
+            if self.cacheService.isExpired(forKey: cacheKey, expirationInterval: self.expirationInterval) {
+                observer(.failure(CacheError.expired))
+                return Disposables.create()
+            }
 
-    func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDTO, Error>) -> Void) {
-        let cacheKey = CacheKey.movieDetails(movieId)
+            if let cachedMovies: CachedMoviesDTO = self.cacheService.load(forKey: cacheKey) {
+                observer(.success(cachedMovies.movies))
+            } else {
+                observer(.failure(CacheError.notFound))
+            }
 
-        if cacheService.isExpired(forKey: cacheKey, expirationInterval: expirationInterval) {
-            completion(.failure(CacheError.expired))
-            return
-        }
-
-        if let cachedDetails: CachedMovieDetailsDTO = cacheService.load(forKey: cacheKey) {
-            completion(.success(cachedDetails.movie))
-        } else {
-            completion(.failure(CacheError.notFound))
+            return Disposables.create()
         }
     }
 
-    func fetchMovieCredits(movieId: Int, completion: @escaping (Result<[ActorDTO], Error>) -> Void) {
-        let cacheKey = CacheKey.movieDetails(movieId)
+    func fetchMovieDetails(movieId: Int) -> Single<MovieDTO> {
+        return Single.create { [weak self] observer in
+            guard let self = self else {
+                observer(.failure(CacheError.notFound))
+                return Disposables.create()
+            }
 
-        if cacheService.isExpired(forKey: cacheKey, expirationInterval: expirationInterval) {
-            completion(.failure(CacheError.expired))
-            return
-        }
+            let cacheKey = CacheKey.movieDetails(movieId)
 
-        if let cachedDetails: CachedMovieDetailsDTO = cacheService.load(forKey: cacheKey) {
-            completion(.success(cachedDetails.actors))
-        } else {
-            completion(.failure(CacheError.notFound))
+            if self.cacheService.isExpired(forKey: cacheKey, expirationInterval: self.expirationInterval) {
+                observer(.failure(CacheError.expired))
+                return Disposables.create()
+            }
+
+            if let cachedDetails: CachedMovieDetailsDTO = self.cacheService.load(forKey: cacheKey) {
+                observer(.success(cachedDetails.movie))
+            } else {
+                observer(.failure(CacheError.notFound))
+            }
+
+            return Disposables.create()
         }
     }
 
-    func fetchMovieImages(movieId: Int, completion: @escaping (Result<[String], Error>) -> Void) {
-        let cacheKey = CacheKey.movieDetails(movieId)
+    func fetchMovieCredits(movieId: Int) -> Single<[ActorDTO]> {
+        return Single.create { [weak self] observer in
+            guard let self = self else {
+                observer(.failure(CacheError.notFound))
+                return Disposables.create()
+            }
 
-        if cacheService.isExpired(forKey: cacheKey, expirationInterval: expirationInterval) {
-            completion(.failure(CacheError.expired))
-            return
+            let cacheKey = CacheKey.movieDetails(movieId)
+
+            if self.cacheService.isExpired(forKey: cacheKey, expirationInterval: self.expirationInterval) {
+                observer(.failure(CacheError.expired))
+                return Disposables.create()
+            }
+
+            if let cachedDetails: CachedMovieDetailsDTO = self.cacheService.load(forKey: cacheKey) {
+                observer(.success(cachedDetails.actors))
+            } else {
+                observer(.failure(CacheError.notFound))
+            }
+
+            return Disposables.create()
         }
+    }
 
-        if let cachedDetails: CachedMovieDetailsDTO = cacheService.load(forKey: cacheKey) {
-            completion(.success(cachedDetails.images))
-        } else {
-            completion(.failure(CacheError.notFound))
+    func fetchMovieImages(movieId: Int) -> Single<[String]> {
+        return Single.create { [weak self] observer in
+            guard let self = self else {
+                observer(.failure(CacheError.notFound))
+                return Disposables.create()
+            }
+
+            let cacheKey = CacheKey.movieDetails(movieId)
+
+            if self.cacheService.isExpired(forKey: cacheKey, expirationInterval: self.expirationInterval) {
+                observer(.failure(CacheError.expired))
+                return Disposables.create()
+            }
+
+            if let cachedDetails: CachedMovieDetailsDTO = self.cacheService.load(forKey: cacheKey) {
+                observer(.success(cachedDetails.images))
+            } else {
+                observer(.failure(CacheError.notFound))
+            }
+
+            return Disposables.create()
         }
     }
 

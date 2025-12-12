@@ -53,6 +53,22 @@
 		CA0650352EEA63B300E4B5A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA0650342EEA63B300E4B5A0 /* GoogleService-Info.plist */; };
 		CA0650382EEA721200E4B5A0 /* ArkanaKeys in Frameworks */ = {isa = PBXBuildFile; productRef = CA0650372EEA721200E4B5A0 /* ArkanaKeys */; };
 		CA06503B2EEA734B00E4B5A0 /* ArkanaKeysInterfaces in Frameworks */ = {isa = PBXBuildFile; productRef = CA06503A2EEA734B00E4B5A0 /* ArkanaKeysInterfaces */; };
+		CAF3A5D62EEB861000C28A35 /* LocalMovieDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5D52EEB861000C28A35 /* LocalMovieDataStore.swift */; };
+		CAF3A5D82EEB863200C28A35 /* CachedDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5D72EEB863200C28A35 /* CachedDTOs.swift */; };
+		CAF3A5DF2EEB875800C28A35 /* ImageCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5DC2EEB875800C28A35 /* ImageCacheService.swift */; };
+		CAF3A5E02EEB875800C28A35 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5DA2EEB875800C28A35 /* CacheService.swift */; };
+		CAF3A5E12EEB875800C28A35 /* CacheError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5D92EEB875800C28A35 /* CacheError.swift */; };
+		CAF3A5E22EEB875800C28A35 /* CacheServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5DB2EEB875800C28A35 /* CacheServiceProtocol.swift */; };
+		CAF3A5E32EEB875800C28A35 /* ImageCacheServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A5DD2EEB875800C28A35 /* ImageCacheServiceProtocol.swift */; };
+		CAF3A6022EEC4D1B00C28A35 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A6012EEC4D1B00C28A35 /* RxBlocking */; };
+		CAF3A6042EEC4D1B00C28A35 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A6032EEC4D1B00C28A35 /* RxCocoa */; };
+		CAF3A6062EEC4D1B00C28A35 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A6052EEC4D1B00C28A35 /* RxRelay */; };
+		CAF3A6082EEC4D1B00C28A35 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A6072EEC4D1B00C28A35 /* RxSwift */; };
+		CAF3A60A2EEC4D1B00C28A35 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A6092EEC4D1B00C28A35 /* RxTest */; };
+		CAF3A60D2EEC4D9100C28A35 /* IMDUMBPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A60C2EEC4D9100C28A35 /* IMDUMBPersistence */; };
+		CAF3A60F2EEC547D00C28A35 /* DTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A60E2EEC547D00C28A35 /* DTO+Mapping.swift */; };
+		CAF3A62E2EEC5C1C00C28A35 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A6212EEC5C1C00C28A35 /* NetworkReachability.swift */; };
+		CAF3A6302EEC5C1C00C28A35 /* SecretsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +126,16 @@
 		A10000070 /* UIImageView+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Alamofire.swift"; sourceTree = "<group>"; };
 		CA0650342EEA63B300E4B5A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CA9737462EEB348400130C0D /* IMDUMBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IMDUMBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAF3A5D52EEB861000C28A35 /* LocalMovieDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMovieDataStore.swift; sourceTree = "<group>"; };
+		CAF3A5D72EEB863200C28A35 /* CachedDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedDTOs.swift; sourceTree = "<group>"; };
+		CAF3A5D92EEB875800C28A35 /* CacheError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheError.swift; sourceTree = "<group>"; };
+		CAF3A5DA2EEB875800C28A35 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		CAF3A5DB2EEB875800C28A35 /* CacheServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceProtocol.swift; sourceTree = "<group>"; };
+		CAF3A5DC2EEB875800C28A35 /* ImageCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheService.swift; sourceTree = "<group>"; };
+		CAF3A5DD2EEB875800C28A35 /* ImageCacheServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheServiceProtocol.swift; sourceTree = "<group>"; };
+		CAF3A60E2EEC547D00C28A35 /* DTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DTO+Mapping.swift"; sourceTree = "<group>"; };
+		CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsManager.swift; sourceTree = "<group>"; };
+		CAF3A6212EEC5C1C00C28A35 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -121,11 +147,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAF3A6042EEC4D1B00C28A35 /* RxCocoa in Frameworks */,
 				CA0650382EEA721200E4B5A0 /* ArkanaKeys in Frameworks */,
+				CAF3A6062EEC4D1B00C28A35 /* RxRelay in Frameworks */,
 				A1000006C /* Alamofire in Frameworks */,
 				CA06503B2EEA734B00E4B5A0 /* ArkanaKeysInterfaces in Frameworks */,
 				A10000071 /* FirebaseRemoteConfig in Frameworks */,
+				CAF3A6082EEC4D1B00C28A35 /* RxSwift in Frameworks */,
 				A10000073 /* FirebaseCore in Frameworks */,
+				CAF3A60D2EEC4D9100C28A35 /* IMDUMBPersistence in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAF3A60A2EEC4D1B00C28A35 /* RxTest in Frameworks */,
+				CAF3A6022EEC4D1B00C28A35 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +239,9 @@
 		A10000015 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CAF3A6112EEC5C1C00C28A35 /* Config */,
+				CAF3A6222EEC5C1C00C28A35 /* Utils */,
+				CAF3A5DE2EEB875800C28A35 /* Cache */,
 				A1000001C /* Protocols */,
 				A1000001D /* Extensions */,
 				A1000006A /* Network */,
@@ -253,6 +288,8 @@
 		A1000001A /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				CAF3A60E2EEC547D00C28A35 /* DTO+Mapping.swift */,
+				CAF3A5D72EEB863200C28A35 /* CachedDTOs.swift */,
 				A1000002B /* MovieDTO.swift */,
 			);
 			path = DTOs;
@@ -261,6 +298,7 @@
 		A1000001B /* DataStores */ = {
 			isa = PBXGroup;
 			children = (
+				CAF3A5D52EEB861000C28A35 /* LocalMovieDataStore.swift */,
 				A1000002D /* MovieDataStoreProtocol.swift */,
 				A10000037 /* RemoteMovieDataStore.swift */,
 				A10000039 /* MockMovieDataStore.swift */,
@@ -350,6 +388,34 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		CAF3A5DE2EEB875800C28A35 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				CAF3A5D92EEB875800C28A35 /* CacheError.swift */,
+				CAF3A5DA2EEB875800C28A35 /* CacheService.swift */,
+				CAF3A5DB2EEB875800C28A35 /* CacheServiceProtocol.swift */,
+				CAF3A5DC2EEB875800C28A35 /* ImageCacheService.swift */,
+				CAF3A5DD2EEB875800C28A35 /* ImageCacheServiceProtocol.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		CAF3A6112EEC5C1C00C28A35 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		CAF3A6222EEC5C1C00C28A35 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CAF3A6212EEC5C1C00C28A35 /* NetworkReachability.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -370,6 +436,10 @@
 				A1000006D /* Alamofire */,
 				CA0650372EEA721200E4B5A0 /* ArkanaKeys */,
 				CA06503A2EEA734B00E4B5A0 /* ArkanaKeysInterfaces */,
+				CAF3A6032EEC4D1B00C28A35 /* RxCocoa */,
+				CAF3A6052EEC4D1B00C28A35 /* RxRelay */,
+				CAF3A6072EEC4D1B00C28A35 /* RxSwift */,
+				CAF3A60C2EEC4D9100C28A35 /* IMDUMBPersistence */,
 			);
 			productName = IMDUMB;
 			productReference = A00000FFD /* IMDUMB.app */;
@@ -393,6 +463,8 @@
 			);
 			name = IMDUMBTests;
 			packageProductDependencies = (
+				CAF3A6012EEC4D1B00C28A35 /* RxBlocking */,
+				CAF3A6092EEC4D1B00C28A35 /* RxTest */,
 			);
 			productName = IMDUMBTests;
 			productReference = CA9737462EEB348400130C0D /* IMDUMBTests.xctest */;
@@ -431,6 +503,8 @@
 				A10000075 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CA0650362EEA721200E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeys" */,
 				CA0650392EEA734B00E4B5A0 /* XCLocalSwiftPackageReference "ArkanaKeys/ArkanaKeysInterfaces" */,
+				CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				CAF3A60B2EEC4D9100C28A35 /* XCLocalSwiftPackageReference "Packages/IMDUMBPersistence" */,
 			);
 			productRefGroup = A00000FFE /* Products */;
 			projectDirPath = "";
@@ -475,6 +549,8 @@
 			files = (
 				A10000001 /* AppDelegate.swift in Sources */,
 				A10000003 /* SceneDelegate.swift in Sources */,
+				CAF3A60F2EEC547D00C28A35 /* DTO+Mapping.swift in Sources */,
+				CAF3A5D62EEB861000C28A35 /* LocalMovieDataStore.swift in Sources */,
 				A10000020 /* Movie.swift in Sources */,
 				A10000022 /* ConfigRepositoryProtocol.swift in Sources */,
 				A10000024 /* MovieRepositoryProtocol.swift in Sources */,
@@ -491,9 +567,15 @@
 				A10000038 /* RemoteMovieDataStore.swift in Sources */,
 				A1000003A /* MockMovieDataStore.swift in Sources */,
 				A1000003C /* FirebaseConfigDataStore.swift in Sources */,
+				CAF3A5D82EEB863200C28A35 /* CachedDTOs.swift in Sources */,
 				A1000003E /* MovieRepository.swift in Sources */,
 				A10000040 /* ConfigRepository.swift in Sources */,
 				A10000042 /* SplashContract.swift in Sources */,
+				CAF3A5DF2EEB875800C28A35 /* ImageCacheService.swift in Sources */,
+				CAF3A5E02EEB875800C28A35 /* CacheService.swift in Sources */,
+				CAF3A5E12EEB875800C28A35 /* CacheError.swift in Sources */,
+				CAF3A5E22EEB875800C28A35 /* CacheServiceProtocol.swift in Sources */,
+				CAF3A5E32EEB875800C28A35 /* ImageCacheServiceProtocol.swift in Sources */,
 				A10000044 /* SplashPresenter.swift in Sources */,
 				A10000046 /* SplashViewController.swift in Sources */,
 				A1000004A /* CategoriesContract.swift in Sources */,
@@ -505,6 +587,8 @@
 				A1000005C /* MovieDetailPresenter.swift in Sources */,
 				A1000005E /* MovieDetailViewController.swift in Sources */,
 				A10000062 /* RecommendationModalViewController.swift in Sources */,
+				CAF3A62E2EEC5C1C00C28A35 /* NetworkReachability.swift in Sources */,
+				CAF3A6302EEC5C1C00C28A35 /* SecretsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +881,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ArkanaKeys/ArkanaKeysInterfaces;
 		};
+		CAF3A60B2EEC4D9100C28A35 /* XCLocalSwiftPackageReference "Packages/IMDUMBPersistence" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/IMDUMBPersistence;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -814,6 +902,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.0.0;
+			};
+		};
+		CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -841,6 +937,35 @@
 		CA06503A2EEA734B00E4B5A0 /* ArkanaKeysInterfaces */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArkanaKeysInterfaces;
+		};
+		CAF3A6012EEC4D1B00C28A35 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		CAF3A6032EEC4D1B00C28A35 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CAF3A6052EEC4D1B00C28A35 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		CAF3A6072EEC4D1B00C28A35 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CAF3A6092EEC4D1B00C28A35 /* RxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAF3A6002EEC4D1B00C28A35 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxTest;
+		};
+		CAF3A60C2EEC4D9100C28A35 /* IMDUMBPersistence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IMDUMBPersistence;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

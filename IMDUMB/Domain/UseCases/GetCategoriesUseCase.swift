@@ -1,4 +1,5 @@
 import Foundation
+import RxSwift
 
 // MARK: - Get Categories Use Case
 // SOLID: Single Responsibility Principle - Only handles getting categories
@@ -11,7 +12,10 @@ class GetCategoriesUseCase {
         self.repository = repository
     }
 
-    func execute(completion: @escaping (Result<[Category], Error>) -> Void) {
-        repository.getCategories(completion: completion)
+    func execute() -> Single<[Category]> {
+        return repository.getCategories()
+            .map { categories in
+                categories.filter { !$0.movies.isEmpty }
+            }
     }
 }

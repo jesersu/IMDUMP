@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
 
-public @objc(CachedMovie)
+@objc(CachedMovie)
 public class CachedMovie: NSManagedObject {
 }

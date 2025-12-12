@@ -15,6 +15,6 @@ public extension CachedImage {
 
 }
 
-public extension CachedImage : Identifiable {
+extension CachedImage : Identifiable {
 
 }

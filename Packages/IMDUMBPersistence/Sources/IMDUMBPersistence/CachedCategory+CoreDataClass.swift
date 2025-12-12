@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
 
-public @objc(CachedCategory)
+@objc(CachedCategory)
 public class CachedCategory: NSManagedObject {
 }

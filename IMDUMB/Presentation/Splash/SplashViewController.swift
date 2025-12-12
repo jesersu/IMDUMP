@@ -41,6 +41,8 @@ class SplashViewController: UIViewController {
 
 // MARK: - SplashViewProtocol
 extension SplashViewController: SplashViewProtocol {
+    func showToast(_ message: String) {}
+    
     func showLoading() {
         activityIndicator?.startAnimating()
     }

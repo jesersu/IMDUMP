@@ -32,6 +32,6 @@ public extension CachedCategory {
 
 }
 
-public extension CachedCategory : Identifiable {
+extension CachedCategory : Identifiable {
 
 }

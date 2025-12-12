@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 public class CoreDataCacheService: CacheServiceProtocol {
-    static let shared = CoreDataCacheService()
+    public static let shared = CoreDataCacheService()
 
     private let context: NSManagedObjectContext
 

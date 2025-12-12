@@ -1,41 +1,54 @@
 import Foundation
 import IMDUMBPersistence
+import RxSwift
 
 // MARK: - Mock Movie Data Store
 // For testing and development without API calls
 // SOLID: Liskov Substitution Principle - Can substitute RemoteMovieDataStore without breaking functionality
 class MockMovieDataStore: MovieDataStoreProtocol {
 
-    func fetchMovies(endpoint: String, completion: @escaping (Result<[MovieDTO], Error>) -> Void) {
-        // Simulate network delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let mockMovies = self.generateMockMovies()
-            completion(.success(mockMovies))
+    func fetchMovies(endpoint: String) -> Single<[MovieDTO]> {
+        return Single.create { observer in
+            // Simulate network delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                let mockMovies = self.generateMockMovies()
+                observer(.success(mockMovies))
+            }
+            return Disposables.create()
         }
     }
 
-    func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDTO, Error>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let mockMovie = self.generateMockMovies().first!
-            completion(.success(mockMovie))
+    func fetchMovieDetails(movieId: Int) -> Single<MovieDTO> {
+        return Single.create { observer in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                let mockMovie = self.generateMockMovies().first!
+                observer(.success(mockMovie))
+            }
+            return Disposables.create()
         }
     }
 
-    func fetchMovieCredits(movieId: Int, completion: @escaping (Result<[ActorDTO], Error>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            let mockActors = self.generateMockActors()
-            completion(.success(mockActors))
+    func fetchMovieCredits(movieId: Int) -> Single<[ActorDTO]> {
+        return Single.create { observer in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                let mockActors = self.generateMockActors()
+                observer(.success(mockActors))
+            }
+            return Disposables.create()
         }
     }
 
-    func fetchMovieImages(movieId: Int, completion: @escaping (Result<[String], Error>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            let mockImages = [
-                "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
-                "/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg",
-                "/cPFoD8xvdJxWGNvFOcjfGnJGDi2.jpg"
-            ]
-            completion(.success(mockImages))
+    func fetchMovieImages(movieId: Int) -> Single<[String]> {
+        return Single.create { observer in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                let mockImages = [
+                    "/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
+                    "/9BBTo63ANSmhC4e6r62OJFuK2GL.jpg",
+                    "/cPFoD8xvdJxWGNvFOcjfGnJGDi2.jpg"
+                ]
+                observer(.success(mockImages))
+            }
+            return Disposables.create()
         }
     }
 

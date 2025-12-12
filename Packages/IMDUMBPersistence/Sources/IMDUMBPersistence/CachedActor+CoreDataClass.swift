@@ -1,6 +1,6 @@
 import Foundation
 import CoreData
 
-public @objc(CachedActor)
+@objc(CachedActor)
 public class CachedActor: NSManagedObject {
 }

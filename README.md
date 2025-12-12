@@ -19,6 +19,16 @@ IMDUMB is an iOS application that displays movie categories and details, built w
 - **Splash Screen** with Firebase configuration loading
 - **Categories Screen** displaying movies organized by category (Popular, Top Rated, Upcoming, Now Playing)
 - **Unique UI Pattern**: UICollectionView with UITableView inside each cell
+- **Offline Support**:
+  - CoreData caching with 24-hour TTL
+  - Cache-first strategy with background refresh
+  - Toast notification when viewing cached data offline
+  - Automatic migration from UserDefaults to CoreData
+- **Reactive Programming**:
+  - RxSwift for all async operations
+  - Single<T> pattern for one-time operations
+  - DisposeBag for automatic memory management
+  - MainScheduler for thread-safe UI updates
 - **Movie Detail Screen** featuring:
   - Horizontal image carousel with pagination
   - Movie title, rating, and HTML-formatted description
@@ -113,17 +123,24 @@ The codebase demonstrates SOLID principles throughout:
 - **Minimum iOS Version**: 15.0
 - **UI Framework**: UIKit with XIB files (no SwiftUI, no programmatic views)
 - **Architecture**: MVP + Clean Architecture
-- **Networking**: Alamofire 5.9.1 for HTTP requests and image loading
+- **Reactive Programming**: RxSwift 6.9.1 for asynchronous operations and data streams
+- **Networking**: Alamofire 5.10.2 for HTTP requests and image loading
 - **Dependency Management**: Swift Package Manager (SPM)
-- **Firebase**: Firebase Remote Config / Realtime Database (for configuration)
+- **Persistence**: CoreData for offline caching (IMDUMBPersistence package)
+- **Firebase**: Firebase Remote Config for dynamic configuration
 
 ## 📦 Dependencies
 
 Dependencies are managed via Swift Package Manager:
 
 - **Arkana** - Secrets encryption and management (Ruby gem)
-- **Alamofire 5.9.1** - HTTP networking and async image loading
-- **Firebase iOS SDK 11.0+** - Remote Config for dynamic configuration
+- **Alamofire 5.10.2** - HTTP networking and async image loading
+- **RxSwift 6.9.1** - Reactive programming for async operations
+  - RxSwift - Core reactive extensions
+  - RxCocoa - UIKit reactive extensions
+  - RxBlocking - Synchronous testing support
+- **Firebase iOS SDK 11.15.0** - Remote Config for dynamic configuration
+- **IMDUMBPersistence** - Local Swift Package for CoreData caching
 
 ## 🚀 Installation & Setup
 

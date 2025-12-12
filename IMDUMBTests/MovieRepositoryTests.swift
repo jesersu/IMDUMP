@@ -1,4 +1,6 @@
 import XCTest
+import RxSwift
+import RxBlocking
 @testable import IMDUMB
 
 // MARK: - Mock DataStore for Repository Tests
@@ -9,37 +11,37 @@ class MockMovieDataStoreForTests: MovieDataStoreProtocol {
     var mockActorDTOs: [ActorDTO] = []
     var mockImages: [String] = []
 
-    func fetchMovies(endpoint: String, completion: @escaping (Result<[MovieDTO], Error>) -> Void) {
+    func fetchMovies(endpoint: String) -> Single<[MovieDTO]> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "DataStoreError", code: 1, userInfo: nil))
         } else {
-            completion(.success(mockMovieDTOs))
+            return Single.just(mockMovieDTOs)
         }
     }
 
-    func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDTO, Error>) -> Void) {
+    func fetchMovieDetails(movieId: Int) -> Single<MovieDTO> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "DataStoreError", code: 1, userInfo: nil))
         } else if let dto = mockMovieDTO {
-            completion(.success(dto))
+            return Single.just(dto)
         } else {
-            completion(.failure(NSError(domain: "NoMockData", code: 2, userInfo: nil)))
+            return Single.error(NSError(domain: "NoMockData", code: 2, userInfo: nil))
         }
     }
 
-    func fetchMovieCredits(movieId: Int, completion: @escaping (Result<[ActorDTO], Error>) -> Void) {
+    func fetchMovieCredits(movieId: Int) -> Single<[ActorDTO]> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "DataStoreError", code: 1, userInfo: nil))
         } else {
-            completion(.success(mockActorDTOs))
+            return Single.just(mockActorDTOs)
         }
     }
 
-    func fetchMovieImages(movieId: Int, completion: @escaping (Result<[String], Error>) -> Void) {
+    func fetchMovieImages(movieId: Int) -> Single<[String]> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "DataStoreError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "DataStoreError", code: 1, userInfo: nil))
         } else {
-            completion(.success(mockImages))
+            return Single.just(mockImages)
         }
     }
 }
@@ -68,7 +70,7 @@ class MovieRepositoryTests: XCTestCase {
 
     // MARK: - Test Get Categories
 
-    func testGetCategories_WhenDataStoreReturnsMovies_ShouldMapToDomainModels() {
+    func testGetCategories_WhenDataStoreReturnsMovies_ShouldMapToDomainModels() throws {
         // Given
         let movieDTO = MovieDTO(
             id: 1,
@@ -81,54 +83,30 @@ class MovieRepositoryTests: XCTestCase {
         )
         mockDataStore.mockMovieDTOs = [movieDTO]
 
-        let expectation = self.expectation(description: "Categories mapped")
-
         // When
-        sut.getCategories { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertEqual(categories.count, 4) // popular, top_rated, upcoming, now_playing
+        let categories = try sut.getCategories().toBlocking().first()!
 
-                // Check first category
-                let firstCategory = categories.first!
-                XCTAssertEqual(firstCategory.movies.count, 1)
-                XCTAssertEqual(firstCategory.movies.first?.title, "Test Movie")
-                XCTAssertEqual(firstCategory.movies.first?.voteAverage, 8.5)
+        // Then
+        XCTAssertEqual(categories.count, 4) // popular, top_rated, upcoming, now_playing
 
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
-
-        waitForExpectations(timeout: 2.0)
+        // Check first category
+        let firstCategory = categories.first!
+        XCTAssertEqual(firstCategory.movies.count, 1)
+        XCTAssertEqual(firstCategory.movies.first?.title, "Test Movie")
+        XCTAssertEqual(firstCategory.movies.first?.voteAverage, 8.5)
     }
 
     func testGetCategories_WhenDataStoreReturnsError_ShouldPropagateError() {
         // Given
         mockDataStore.shouldReturnError = true
 
-        let expectation = self.expectation(description: "Error propagated")
-
-        // When
-        sut.getCategories { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
-        }
-
-        waitForExpectations(timeout: 2.0)
+        // When/Then
+        XCTAssertThrowsError(try sut.getCategories().toBlocking().first())
     }
 
     // MARK: - Test Get Movie Details
 
-    func testGetMovieDetails_WhenDataStoreReturnsDetails_ShouldMapToDomainModel() {
+    func testGetMovieDetails_WhenDataStoreReturnsDetails_ShouldMapToDomainModel() throws {
         // Given
         let movieDTO = MovieDTO(
             id: 123,
@@ -149,52 +127,29 @@ class MovieRepositoryTests: XCTestCase {
         mockDataStore.mockActorDTOs = [actorDTO]
         mockDataStore.mockImages = ["/image1.jpg", "/image2.jpg"]
 
-        let expectation = self.expectation(description: "Movie details mapped")
-
         // When
-        sut.getMovieDetails(movieId: 123) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(movie.id, 123)
-                XCTAssertEqual(movie.title, "Detailed Movie")
-                XCTAssertEqual(movie.voteAverage, 9.0)
-                XCTAssertEqual(movie.images.count, 2)
-                XCTAssertEqual(movie.cast.count, 1)
-                XCTAssertEqual(movie.cast.first?.name, "Actor Name")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.getMovieDetails(movieId: 123).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(movie.id, 123)
+        XCTAssertEqual(movie.title, "Detailed Movie")
+        XCTAssertEqual(movie.voteAverage, 9.0)
+        XCTAssertEqual(movie.images.count, 2)
+        XCTAssertEqual(movie.cast.count, 1)
+        XCTAssertEqual(movie.cast.first?.name, "Actor Name")
     }
 
     func testGetMovieDetails_WhenDataStoreReturnsError_ShouldPropagateError() {
         // Given
         mockDataStore.shouldReturnError = true
 
-        let expectation = self.expectation(description: "Error propagated")
-
-        // When
-        sut.getMovieDetails(movieId: 999) { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got failure")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
-        }
-
-        waitForExpectations(timeout: 1.0)
+        // When/Then
+        XCTAssertThrowsError(try sut.getMovieDetails(movieId: 999).toBlocking().first())
     }
 
     // MARK: - Test DTO to Domain Mapping
 
-    func testGetMovieDetails_WhenDTOHasNilValues_ShouldHandleGracefully() {
+    func testGetMovieDetails_WhenDTOHasNilValues_ShouldHandleGracefully() throws {
         // Given
         let movieDTO = MovieDTO(
             id: 456,
@@ -209,29 +164,19 @@ class MovieRepositoryTests: XCTestCase {
         mockDataStore.mockActorDTOs = []
         mockDataStore.mockImages = []
 
-        let expectation = self.expectation(description: "Minimal movie mapped")
-
         // When
-        sut.getMovieDetails(movieId: 456) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertNil(movie.posterPath)
-                XCTAssertNil(movie.backdropPath)
-                XCTAssertTrue(movie.images.isEmpty)
-                XCTAssertTrue(movie.cast.isEmpty)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.getMovieDetails(movieId: 456).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertNil(movie.posterPath)
+        XCTAssertNil(movie.backdropPath)
+        XCTAssertTrue(movie.images.isEmpty)
+        XCTAssertTrue(movie.cast.isEmpty)
     }
 
     // MARK: - Test Cache-First Behavior
 
-    func testGetCategories_WhenCacheHit_ShouldReturnCachedData() {
+    func testGetCategories_WhenCacheHit_ShouldReturnCachedData() throws {
         // Given
         mockLocalDataStore = MockMovieDataStoreForTests()
         mockRemoteDataStore = MockMovieDataStoreForTests()
@@ -242,25 +187,15 @@ class MovieRepositoryTests: XCTestCase {
 
         sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
 
-        let expectation = self.expectation(description: "Cached categories returned")
-
         // When
-        sut.getCategories { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertEqual(categories.count, 4)
-                XCTAssertEqual(categories.first?.movies.first?.title, "Cached Movie")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let categories = try sut.getCategories().toBlocking().first()!
 
-        waitForExpectations(timeout: 2.0)
+        // Then
+        XCTAssertEqual(categories.count, 4)
+        XCTAssertEqual(categories.first?.movies.first?.title, "Cached Movie")
     }
 
-    func testGetCategories_WhenCacheMiss_ShouldFetchFromRemote() {
+    func testGetCategories_WhenCacheMiss_ShouldFetchFromRemote() throws {
         // Given
         mockLocalDataStore = MockMovieDataStoreForTests()
         mockRemoteDataStore = MockMovieDataStoreForTests()
@@ -271,25 +206,15 @@ class MovieRepositoryTests: XCTestCase {
 
         sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
 
-        let expectation = self.expectation(description: "Remote categories returned")
-
         // When
-        sut.getCategories { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertEqual(categories.count, 4)
-                XCTAssertEqual(categories.first?.movies.first?.title, "Remote Movie")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let categories = try sut.getCategories().toBlocking().first()!
 
-        waitForExpectations(timeout: 2.0)
+        // Then
+        XCTAssertEqual(categories.count, 4)
+        XCTAssertEqual(categories.first?.movies.first?.title, "Remote Movie")
     }
 
-    func testGetMovieDetails_WhenCacheHit_ShouldReturnCachedDetails() {
+    func testGetMovieDetails_WhenCacheHit_ShouldReturnCachedDetails() throws {
         // Given
         mockLocalDataStore = MockMovieDataStoreForTests()
         mockRemoteDataStore = MockMovieDataStoreForTests()
@@ -301,24 +226,14 @@ class MovieRepositoryTests: XCTestCase {
 
         sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
 
-        let expectation = self.expectation(description: "Cached details returned")
-
         // When
-        sut.getMovieDetails(movieId: 123) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(movie.title, "Cached Detail")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.getMovieDetails(movieId: 123).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(movie.title, "Cached Detail")
     }
 
-    func testGetMovieDetails_WhenCacheMiss_ShouldFetchFromRemote() {
+    func testGetMovieDetails_WhenCacheMiss_ShouldFetchFromRemote() throws {
         // Given
         mockLocalDataStore = MockMovieDataStoreForTests()
         mockRemoteDataStore = MockMovieDataStoreForTests()
@@ -332,20 +247,10 @@ class MovieRepositoryTests: XCTestCase {
 
         sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
 
-        let expectation = self.expectation(description: "Remote details returned")
-
         // When
-        sut.getMovieDetails(movieId: 456) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(movie.title, "Remote Detail")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.getMovieDetails(movieId: 456).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(movie.title, "Remote Detail")
     }
 }
