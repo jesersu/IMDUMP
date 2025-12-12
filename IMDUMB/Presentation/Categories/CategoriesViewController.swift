@@ -51,10 +51,10 @@ class CategoriesViewController: UIViewController {
     }
 
     private func setupPresenter() {
-        // Using mock data store for development
-        // Change to RemoteMovieDataStore for production
-        let dataStore = RemoteMovieDataStore()
-        let repository = MovieRepository(dataStore: dataStore)
+        // Setup dual data stores for cache-first offline support
+        let localDataStore = LocalMovieDataStore(cacheService: CacheService.shared)
+        let remoteDataStore = RemoteMovieDataStore()
+        let repository = MovieRepository(localDataStore: localDataStore, remoteDataStore: remoteDataStore)
         let useCase = GetCategoriesUseCase(repository: repository)
 
         presenter = CategoriesPresenter(view: self, getCategoriesUseCase: useCase)

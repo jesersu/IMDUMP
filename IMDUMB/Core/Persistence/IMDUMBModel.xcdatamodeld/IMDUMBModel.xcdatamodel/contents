@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CachedActor" representedClassName="CachedActor" syncable="YES">
+        <attribute name="character" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="profilePath" optional="YES" attributeType="String"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CachedMovie" inverseName="actors" inverseEntity="CachedMovie"/>
+    </entity>
+    <entity name="CachedCategory" representedClassName="CachedCategory" syncable="YES">
+        <attribute name="endpoint" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CachedMovie" inverseName="category" inverseEntity="CachedMovie"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CachedImage" representedClassName="CachedImage" syncable="YES">
+        <attribute name="imageURL" attributeType="String"/>
+        <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="localPath" attributeType="String"/>
+        <attribute name="type" attributeType="String"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CachedMovie" inverseName="images" inverseEntity="CachedMovie"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="imageURL"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CachedMovie" representedClassName="CachedMovie" syncable="YES">
+        <attribute name="backdropPath" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lastUpdated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="overview" attributeType="String"/>
+        <attribute name="posterPath" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="voteAverage" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="actors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CachedActor" inverseName="movies" inverseEntity="CachedActor"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CachedCategory" inverseName="movies" inverseEntity="CachedCategory"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CachedImage" inverseName="movie" inverseEntity="CachedImage"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+</model>

@@ -49,6 +49,8 @@ class MovieRepositoryTests: XCTestCase {
 
     var sut: MovieRepository!
     var mockDataStore: MockMovieDataStoreForTests!
+    var mockLocalDataStore: MockMovieDataStoreForTests!
+    var mockRemoteDataStore: MockMovieDataStoreForTests!
 
     override func setUp() {
         super.setUp()
@@ -59,6 +61,8 @@ class MovieRepositoryTests: XCTestCase {
     override func tearDown() {
         sut = nil
         mockDataStore = nil
+        mockLocalDataStore = nil
+        mockRemoteDataStore = nil
         super.tearDown()
     }
 
@@ -216,6 +220,126 @@ class MovieRepositoryTests: XCTestCase {
                 XCTAssertNil(movie.backdropPath)
                 XCTAssertTrue(movie.images.isEmpty)
                 XCTAssertTrue(movie.cast.isEmpty)
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Expected success but got failure")
+            }
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    // MARK: - Test Cache-First Behavior
+
+    func testGetCategories_WhenCacheHit_ShouldReturnCachedData() {
+        // Given
+        mockLocalDataStore = MockMovieDataStoreForTests()
+        mockRemoteDataStore = MockMovieDataStoreForTests()
+
+        let movieDTO = MovieDTO(id: 1, title: "Cached Movie", overview: "Test", posterPath: nil, backdropPath: nil, voteAverage: 7.0, releaseDate: "2024-01-01")
+        mockLocalDataStore.mockMovieDTOs = [movieDTO]
+        mockRemoteDataStore.mockMovieDTOs = []
+
+        sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
+
+        let expectation = self.expectation(description: "Cached categories returned")
+
+        // When
+        sut.getCategories { result in
+            // Then
+            switch result {
+            case .success(let categories):
+                XCTAssertEqual(categories.count, 4)
+                XCTAssertEqual(categories.first?.movies.first?.title, "Cached Movie")
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Expected success but got failure")
+            }
+        }
+
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testGetCategories_WhenCacheMiss_ShouldFetchFromRemote() {
+        // Given
+        mockLocalDataStore = MockMovieDataStoreForTests()
+        mockRemoteDataStore = MockMovieDataStoreForTests()
+
+        mockLocalDataStore.shouldReturnError = true // Simulate cache miss
+        let movieDTO = MovieDTO(id: 2, title: "Remote Movie", overview: "Test", posterPath: nil, backdropPath: nil, voteAverage: 8.0, releaseDate: "2024-01-01")
+        mockRemoteDataStore.mockMovieDTOs = [movieDTO]
+
+        sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
+
+        let expectation = self.expectation(description: "Remote categories returned")
+
+        // When
+        sut.getCategories { result in
+            // Then
+            switch result {
+            case .success(let categories):
+                XCTAssertEqual(categories.count, 4)
+                XCTAssertEqual(categories.first?.movies.first?.title, "Remote Movie")
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Expected success but got failure")
+            }
+        }
+
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testGetMovieDetails_WhenCacheHit_ShouldReturnCachedDetails() {
+        // Given
+        mockLocalDataStore = MockMovieDataStoreForTests()
+        mockRemoteDataStore = MockMovieDataStoreForTests()
+
+        let movieDTO = MovieDTO(id: 123, title: "Cached Detail", overview: "Test", posterPath: nil, backdropPath: nil, voteAverage: 9.0, releaseDate: "2024-01-01")
+        mockLocalDataStore.mockMovieDTO = movieDTO
+        mockLocalDataStore.mockActorDTOs = []
+        mockLocalDataStore.mockImages = []
+
+        sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
+
+        let expectation = self.expectation(description: "Cached details returned")
+
+        // When
+        sut.getMovieDetails(movieId: 123) { result in
+            // Then
+            switch result {
+            case .success(let movie):
+                XCTAssertEqual(movie.title, "Cached Detail")
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Expected success but got failure")
+            }
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testGetMovieDetails_WhenCacheMiss_ShouldFetchFromRemote() {
+        // Given
+        mockLocalDataStore = MockMovieDataStoreForTests()
+        mockRemoteDataStore = MockMovieDataStoreForTests()
+
+        mockLocalDataStore.shouldReturnError = true // Simulate cache miss
+
+        let movieDTO = MovieDTO(id: 456, title: "Remote Detail", overview: "Test", posterPath: nil, backdropPath: nil, voteAverage: 8.5, releaseDate: "2024-01-01")
+        mockRemoteDataStore.mockMovieDTO = movieDTO
+        mockRemoteDataStore.mockActorDTOs = []
+        mockRemoteDataStore.mockImages = []
+
+        sut = MovieRepository(localDataStore: mockLocalDataStore, remoteDataStore: mockRemoteDataStore)
+
+        let expectation = self.expectation(description: "Remote details returned")
+
+        // When
+        sut.getMovieDetails(movieId: 456) { result in
+            // Then
+            switch result {
+            case .success(let movie):
+                XCTAssertEqual(movie.title, "Remote Detail")
                 expectation.fulfill()
             case .failure:
                 XCTFail("Expected success but got failure")

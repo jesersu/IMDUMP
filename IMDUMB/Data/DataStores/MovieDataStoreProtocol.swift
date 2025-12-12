@@ -1,4 +1,5 @@
 import Foundation
+import IMDUMBPersistence
 
 // MARK: - Data Store Protocol
 // SOLID: Open/Closed Principle - Open for extension (different implementations), closed for modification

@@ -58,9 +58,9 @@ class FirebaseConfigDataStore: ConfigDataStoreProtocol {
 
     private func getConfigurationValues() -> [String: Any] {
         let config: [String: Any] = [
-            "api_base_url": remoteConfig.configValue(forKey: "api_base_url").stringValue ?? "https://api.themoviedb.org/3",
-            "api_key": remoteConfig.configValue(forKey: "api_key").stringValue ?? "",
-            "welcome_message": remoteConfig.configValue(forKey: "welcome_message").stringValue ?? "Welcome to IMDUMB!",
+            "api_base_url": remoteConfig.configValue(forKey: "api_base_url").stringValue,
+            "api_key": remoteConfig.configValue(forKey: "api_key").stringValue,
+            "welcome_message": remoteConfig.configValue(forKey: "welcome_message").stringValue,
             "enable_features": [
                 "dark_mode": remoteConfig.configValue(forKey: "dark_mode").boolValue,
                 "recommendations": remoteConfig.configValue(forKey: "recommendations").boolValue,

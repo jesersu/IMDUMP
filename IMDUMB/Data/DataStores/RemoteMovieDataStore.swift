@@ -1,4 +1,5 @@
 import Foundation
+import IMDUMBPersistence
 
 // MARK: - Remote Movie Data Store
 // SOLID: Single Responsibility - Handles remote data fetching only
