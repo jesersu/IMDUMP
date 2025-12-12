@@ -11,8 +11,6 @@ IMDUMB is an iOS application that displays movie categories and details, built w
 - **Environment-based Configuration** - Different settings for Debug/Release builds
 - **Type-Safe Secrets** - Compile-time safety when accessing encrypted keys
 - **Firebase Remote Config** - Dynamic configuration management without app updates
-- See [ARKANA_SETUP.md](ARKANA_SETUP.md) for Arkana setup instructions
-- See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for Firebase integration guide
 
 ## 📱 Features
 
@@ -420,15 +418,12 @@ Dependencies are managed via Swift Package Manager:
    arkana -e .env
    ```
 
-   See [ARKANA_SETUP.md](ARKANA_SETUP.md) for detailed instructions.
-
 4. **Open the project**
    ```bash
    open IMDUMB.xcodeproj
    ```
 
 4. **Configure Firebase** (Required for full functionality)
-   - Follow the detailed guide in [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
    - Download `GoogleService-Info.plist` from Firebase Console
    - Add it to the project root in Xcode
    - Set up Remote Config parameters in Firebase Console
@@ -624,15 +619,6 @@ bundle exec fastlane test
 bundle exec fastlane ci
 ```
 
-### Continuous Integration Features
-
-✅ **Automated Testing** - All tests run on every push/PR
-✅ **Code Coverage** - Coverage reports uploaded as artifacts
-✅ **Build Validation** - Both Debug and Release builds verified
-✅ **Dependency Caching** - Faster builds with SPM and gem caching
-✅ **PR Comments** - Automatic CI result comments on PRs
-✅ **Release Automation** - Automatic releases on version tags
-✅ **Weekly Dependency Updates** - Automated dependency update PRs
 
 ## 📝 Additional Notes
 
@@ -661,14 +647,3 @@ Images are loaded asynchronously using URLSession. For production, consider usin
 
 Movie descriptions support HTML formatting through `String+HTML.swift` extension.
 
-## 👤 Author
-
-Developed as a technical challenge demonstrating iOS development skills with Clean Architecture and SOLID principles.
-
-## 📄 License
-
-This project is for demonstration purposes.
-
----
-
-**Note**: Remember to add your TMDB API key and Firebase configuration before deploying to production.
