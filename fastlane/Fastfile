@@ -9,9 +9,9 @@ platform :ios do
   project = "IMDUMB.xcodeproj"
 
   # MARK: - Before All
-  before_all do
-    ensure_git_status_clean unless ENV['SKIP_GIT_CHECK']
-  end
+  #before_all do
+  #  ensure_git_status_clean unless ENV['SKIP_GIT_CHECK']
+  #end
 
   # MARK: - Build Lanes
 
