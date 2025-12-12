@@ -8,7 +8,7 @@ class DTOMappingTests: XCTestCase {
 
     func testMovieDTOToDomain_WithAllFields_ShouldMapCorrectly() {
         // Given
-        let movieDTO = MovieDTO(
+        let movieDTO = IMDUMB.MovieDTO(
             id: 123,
             title: "Test Movie",
             overview: "This is a test overview",
@@ -40,7 +40,7 @@ class DTOMappingTests: XCTestCase {
 
     func testMovieDTOToDomain_WithNilOptionalFields_ShouldMapCorrectly() {
         // Given
-        let movieDTO = MovieDTO(
+        let movieDTO = IMDUMB.MovieDTO(
             id: 456,
             title: "Minimal Movie",
             overview: "Simple overview",
@@ -65,7 +65,7 @@ class DTOMappingTests: XCTestCase {
 
     func testMovieDTOToDomain_WithEmptyCollections_ShouldMapCorrectly() {
         // Given
-        let movieDTO = MovieDTO(
+        let movieDTO = IMDUMB.MovieDTO(
             id: 789,
             title: "Movie Without Extras",
             overview: "No images or cast",
@@ -88,7 +88,7 @@ class DTOMappingTests: XCTestCase {
 
     func testActorDTOToDomain_WithAllFields_ShouldMapCorrectly() {
         // Given
-        let actorDTO = ActorDTO(
+        let actorDTO = IMDUMB.ActorDTO(
             id: 101,
             name: "Famous Actor",
             character: "Main Character",
@@ -107,7 +107,7 @@ class DTOMappingTests: XCTestCase {
 
     func testActorDTOToDomain_WithNilProfilePath_ShouldMapCorrectly() {
         // Given
-        let actorDTO = ActorDTO(
+        let actorDTO = IMDUMB.ActorDTO(
             id: 202,
             name: "Unknown Actor",
             character: "Side Character",
@@ -129,9 +129,9 @@ class DTOMappingTests: XCTestCase {
     func testMultipleActorDTOsToDomain_ShouldMapAllCorrectly() {
         // Given
         let actorDTOs = [
-            ActorDTO(id: 1, name: "Actor 1", character: "Hero", profilePath: "/hero.jpg"),
-            ActorDTO(id: 2, name: "Actor 2", character: "Villain", profilePath: "/villain.jpg"),
-            ActorDTO(id: 3, name: "Actor 3", character: "Sidekick", profilePath: nil)
+            IMDUMB.ActorDTO(id: 1, name: "Actor 1", character: "Hero", profilePath: "/hero.jpg"),
+            IMDUMB.ActorDTO(id: 2, name: "Actor 2", character: "Villain", profilePath: "/villain.jpg"),
+            IMDUMB.ActorDTO(id: 3, name: "Actor 3", character: "Sidekick", profilePath: nil)
         ]
 
         // When
@@ -148,7 +148,7 @@ class DTOMappingTests: XCTestCase {
 
     func testMovieDTOToDomain_WithLargeImageCollection_ShouldMapAllImages() {
         // Given
-        let movieDTO = MovieDTO(
+        let movieDTO = IMDUMB.MovieDTO(
             id: 999,
             title: "Movie with Many Images",
             overview: "Test",
@@ -170,7 +170,7 @@ class DTOMappingTests: XCTestCase {
 
     func testMovieDTOToDomain_WithSpecialCharacters_ShouldPreserveData() {
         // Given
-        let movieDTO = MovieDTO(
+        let movieDTO = IMDUMB.MovieDTO(
             id: 888,
             title: "Título Español & Special!",
             overview: "Overview with <HTML> & special characters: émojis 🎬",

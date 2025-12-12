@@ -16,8 +16,11 @@ class MovieRepository: MovieRepositoryProtocol {
     }
 
     // Convenience initializer for backward compatibility
+    // Note: In tests, use the two-parameter initializer with mock data stores
     convenience init(dataStore: MovieDataStoreProtocol) {
-        self.init(localDataStore: LocalMovieDataStore(), remoteDataStore: dataStore)
+        // Use the same dataStore for both local and remote for backward compatibility
+        // This allows tests to work without initializing CoreData
+        self.init(localDataStore: dataStore, remoteDataStore: dataStore)
     }
 
     func getCategories() -> Single<[Category]> {

@@ -1,13 +1,13 @@
 import Foundation
 
 public struct CachedMoviesDTO: Codable {
-    let movies: [MovieDTO]
+    public  let movies: [MovieDTO]
     let timestamp: Date
 }
 
 public struct CachedMovieDetailsDTO: Codable {
-    let movie: MovieDTO
-    let actors: [ActorDTO]
-    let images: [String]
-    let timestamp: Date
+    public let movie: MovieDTO
+    public let actors: [ActorDTO]
+    public let images: [String]
+    public let timestamp: Date
 }
