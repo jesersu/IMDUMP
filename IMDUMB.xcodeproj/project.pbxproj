@@ -68,7 +68,6 @@
 		CAF3A60D2EEC4D9100C28A35 /* IMDUMBPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = CAF3A60C2EEC4D9100C28A35 /* IMDUMBPersistence */; };
 		CAF3A60F2EEC547D00C28A35 /* DTO+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A60E2EEC547D00C28A35 /* DTO+Mapping.swift */; };
 		CAF3A62E2EEC5C1C00C28A35 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A6212EEC5C1C00C28A35 /* NetworkReachability.swift */; };
-		CAF3A6302EEC5C1C00C28A35 /* SecretsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,7 +133,6 @@
 		CAF3A5DC2EEB875800C28A35 /* ImageCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheService.swift; sourceTree = "<group>"; };
 		CAF3A5DD2EEB875800C28A35 /* ImageCacheServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheServiceProtocol.swift; sourceTree = "<group>"; };
 		CAF3A60E2EEC547D00C28A35 /* DTO+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DTO+Mapping.swift"; sourceTree = "<group>"; };
-		CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsManager.swift; sourceTree = "<group>"; };
 		CAF3A6212EEC5C1C00C28A35 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,7 +237,6 @@
 		A10000015 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CAF3A6112EEC5C1C00C28A35 /* Config */,
 				CAF3A6222EEC5C1C00C28A35 /* Utils */,
 				CAF3A5DE2EEB875800C28A35 /* Cache */,
 				A1000001C /* Protocols */,
@@ -398,14 +395,6 @@
 				CAF3A5DD2EEB875800C28A35 /* ImageCacheServiceProtocol.swift */,
 			);
 			path = Cache;
-			sourceTree = "<group>";
-		};
-		CAF3A6112EEC5C1C00C28A35 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				CAF3A6102EEC5C1C00C28A35 /* SecretsManager.swift */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		CAF3A6222EEC5C1C00C28A35 /* Utils */ = {
@@ -588,7 +577,6 @@
 				A1000005E /* MovieDetailViewController.swift in Sources */,
 				A10000062 /* RecommendationModalViewController.swift in Sources */,
 				CAF3A62E2EEC5C1C00C28A35 /* NetworkReachability.swift in Sources */,
-				CAF3A6302EEC5C1C00C28A35 /* SecretsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

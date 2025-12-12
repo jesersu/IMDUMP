@@ -1,4 +1,6 @@
 import XCTest
+import RxSwift
+import RxBlocking
 @testable import IMDUMB
 
 // MARK: - Mock Repository for Movie Details
@@ -6,17 +8,17 @@ class MockMovieDetailsRepository: MovieRepositoryProtocol {
     var shouldReturnError = false
     var mockMovie: Movie?
 
-    func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
-        completion(.failure(NSError(domain: "NotImplemented", code: 1, userInfo: nil)))
+    func getCategories() -> Single<[IMDUMB.Category]> {
+        return Single.error(NSError(domain: "NotImplemented", code: 1, userInfo: nil))
     }
 
-    func getMovieDetails(movieId: Int, completion: @escaping (Result<Movie, Error>) -> Void) {
+    func getMovieDetails(movieId: Int) -> Single<Movie> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "TestError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "TestError", code: 1, userInfo: nil))
         } else if let movie = mockMovie {
-            completion(.success(movie))
+            return Single.just(movie)
         } else {
-            completion(.failure(NSError(domain: "NoMockData", code: 2, userInfo: nil)))
+            return Single.error(NSError(domain: "NoMockData", code: 2, userInfo: nil))
         }
     }
 }
@@ -41,7 +43,7 @@ class GetMovieDetailsUseCaseTests: XCTestCase {
 
     // MARK: - Test Success Cases
 
-    func testExecute_WhenRepositoryReturnsMovieDetails_ShouldReturnSuccess() {
+    func testExecute_WhenRepositoryReturnsMovieDetails_ShouldReturnSuccess() throws {
         // Given
         let expectedActor = Actor(id: 1, name: "John Doe", character: "Hero", profilePath: "/actor.jpg")
         let expectedMovie = Movie(
@@ -57,30 +59,20 @@ class GetMovieDetailsUseCaseTests: XCTestCase {
         )
         mockRepository.mockMovie = expectedMovie
 
-        let expectation = self.expectation(description: "Movie details returned")
-
         // When
-        sut.execute(movieId: 123) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(movie.id, 123)
-                XCTAssertEqual(movie.title, "Test Movie")
-                XCTAssertEqual(movie.overview, "A great movie")
-                XCTAssertEqual(movie.voteAverage, 8.5)
-                XCTAssertEqual(movie.images.count, 2)
-                XCTAssertEqual(movie.cast.count, 1)
-                XCTAssertEqual(movie.cast.first?.name, "John Doe")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.execute(movieId: 123).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(movie.id, 123)
+        XCTAssertEqual(movie.title, "Test Movie")
+        XCTAssertEqual(movie.overview, "A great movie")
+        XCTAssertEqual(movie.voteAverage, 8.5)
+        XCTAssertEqual(movie.images.count, 2)
+        XCTAssertEqual(movie.cast.count, 1)
+        XCTAssertEqual(movie.cast.first?.name, "John Doe")
     }
 
-    func testExecute_WhenMovieHasNoCast_ShouldReturnMovieWithEmptyCast() {
+    func testExecute_WhenMovieHasNoCast_ShouldReturnMovieWithEmptyCast() throws {
         // Given
         let expectedMovie = Movie(
             id: 456,
@@ -95,49 +87,28 @@ class GetMovieDetailsUseCaseTests: XCTestCase {
         )
         mockRepository.mockMovie = expectedMovie
 
-        let expectation = self.expectation(description: "Movie with no cast returned")
-
         // When
-        sut.execute(movieId: 456) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertTrue(movie.cast.isEmpty)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.execute(movieId: 456).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertTrue(movie.cast.isEmpty)
     }
 
     // MARK: - Test Failure Cases
 
-    func testExecute_WhenRepositoryReturnsError_ShouldReturnFailure() {
+    func testExecute_WhenRepositoryReturnsError_ShouldPropagateError() {
         // Given
         mockRepository.shouldReturnError = true
 
-        let expectation = self.expectation(description: "Error returned")
-
-        // When
-        sut.execute(movieId: 999) { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
+        // When/Then
+        XCTAssertThrowsError(try sut.execute(movieId: 999).toBlocking().first()) { error in
+            XCTAssertNotNil(error)
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
     // MARK: - Test Data Integrity
 
-    func testExecute_WhenMovieHasMultipleImages_ShouldPreserveOrder() {
+    func testExecute_WhenMovieHasMultipleImages_ShouldPreserveOrder() throws {
         // Given
         let images = ["/img1.jpg", "/img2.jpg", "/img3.jpg"]
         let expectedMovie = Movie(
@@ -153,23 +124,13 @@ class GetMovieDetailsUseCaseTests: XCTestCase {
         )
         mockRepository.mockMovie = expectedMovie
 
-        let expectation = self.expectation(description: "Movie with ordered images returned")
-
         // When
-        sut.execute(movieId: 789) { result in
-            // Then
-            switch result {
-            case .success(let movie):
-                XCTAssertEqual(movie.images.count, 3)
-                XCTAssertEqual(movie.images[0], "/img1.jpg")
-                XCTAssertEqual(movie.images[1], "/img2.jpg")
-                XCTAssertEqual(movie.images[2], "/img3.jpg")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let movie = try sut.execute(movieId: 789).toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(movie.images.count, 3)
+        XCTAssertEqual(movie.images[0], "/img1.jpg")
+        XCTAssertEqual(movie.images[1], "/img2.jpg")
+        XCTAssertEqual(movie.images[2], "/img3.jpg")
     }
 }

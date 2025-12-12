@@ -42,30 +42,274 @@ IMDUMB is an iOS application that displays movie categories and details, built w
 
 ## 🏗️ Architecture
 
-The project follows **Clean Architecture** principles with **MVP (Model-View-Presenter)** pattern:
+The project implements a **Clean Architecture** with **MVP (Model-View-Presenter)** pattern, enhanced with **RxSwift** for reactive data flow. This architecture ensures complete separation of concerns, testability, and maintainability.
+
+### Architecture Layers
+
+The application is divided into four distinct layers, each with specific responsibilities:
+
+#### 1. **Domain Layer** (Business Logic - Framework Independent)
+The core of the application, containing pure business logic with zero dependencies on frameworks or external libraries.
+
+- **Entities** (`Domain/Entities/`):
+  - Pure Swift structs representing business models
+  - `Movie.swift`: Movie entity with all its properties
+  - `Actor.swift`: Actor/cast member entity
+  - `Category.swift`: Movie category grouping
+  - No dependencies, no frameworks, just data structures
+
+- **Repository Protocols** (`Domain/Repositories/`):
+  - Abstract interfaces defining data operations
+  - `MovieRepositoryProtocol`: Defines methods to get categories and movie details
+  - Returns `Single<T>` (RxSwift) for reactive data flow
+  - Allows dependency inversion (high-level modules don't depend on low-level details)
+
+- **Use Cases** (`Domain/UseCases/`):
+  - Single-purpose business operations following SRP
+  - `GetCategoriesUseCase`: Fetches movie categories, filters empty categories
+  - `GetMovieDetailsUseCase`: Fetches complete movie information
+  - `LoadConfigurationUseCase`: Loads Firebase Remote Config
+  - Each use case depends only on repository protocols (DIP)
+
+#### 2. **Data Layer** (Data Management)
+Handles all data operations: network requests, local caching, and data transformation.
+
+- **DTOs** (`Data/DTOs/`):
+  - Data Transfer Objects for API responses and cache storage
+  - `MovieDTO`, `ActorDTO`: Match API/database structure
+  - `CachedMoviesDTO`, `CachedMovieDetailsDTO`: CoreData cache wrappers
+  - `DTO+Mapping.swift`: Extension methods to convert DTOs to Domain entities
+  - Separated from domain models to allow independent evolution
+
+- **DataStores** (`Data/DataStores/`):
+  - Different data source implementations following OCP
+  - `RemoteMovieDataStore`: Fetches from TMDB API via Alamofire, returns `Single<T>`
+  - `LocalMovieDataStore`: Retrieves from CoreData cache with 24-hour TTL
+  - `MockMovieDataStore`: Provides sample data for testing
+  - `FirebaseConfigDataStore`: Fetches Remote Config from Firebase
+  - All conform to `MovieDataStoreProtocol` (LSP - interchangeable)
+
+- **Repositories** (`Data/Repositories/`):
+  - Concrete implementations of domain repository protocols
+  - `MovieRepository`: Coordinates between multiple data sources
+  - Implements cache-first strategy with background refresh
+  - Uses `Single.zip()` to parallelize 4 category fetches
+  - Converts DTOs to Domain entities using mapping extensions
+
+#### 3. **Presentation Layer** (UI - MVP Pattern)
+Handles all user interface concerns following the MVP pattern.
+
+Each screen is organized with:
+- **View Protocol**: Defines what the view can do (display data, show loading, show errors)
+- **Presenter Protocol**: Defines what actions the presenter handles
+- **View Controller**: UIKit view that conforms to View Protocol
+  - Displays data received from presenter
+  - Forwards user interactions to presenter
+  - Uses XIB files (no SwiftUI, no programmatic views)
+- **Presenter**: Business logic coordinator
+  - Subscribes to use case `Single<T>` observables
+  - Transforms data for view display
+  - Handles errors and edge cases
+  - Uses `DisposeBag` for automatic memory management
+  - Uses `MainScheduler.instance` for thread-safe UI updates
+
+**Screens:**
+- `Splash/`: Firebase config loading, navigation to main screen
+- `Categories/`: Movie categories with nested UICollectionView/UITableView
+- `MovieDetail/`: Movie details with image carousel, cast, and recommendation
+- `Recommendation/`: Modal for movie recommendation with dynamic height
+
+#### 4. **Core Layer** (Shared Utilities)
+Cross-cutting concerns and shared infrastructure.
+
+- **Network** (`Core/Network/`):
+  - `NetworkService`: Alamofire-based HTTP client with generic request handling
+  - Thread-safe, reusable across all data stores
+
+- **Cache** (`Core/Cache/`):
+  - `CacheServiceProtocol`: Abstract cache interface
+  - `CoreDataCacheService`: CoreData implementation with TTL support
+  - `ImageCacheService`: In-memory image caching for performance
+
+- **Extensions** (`Core/Extensions/`):
+  - `UIViewController+Loading.swift`: Loading indicators and toast notifications
+  - `String+HTML.swift`: HTML parsing for movie descriptions
+  - `UIImageView+Alamofire.swift`: Async image loading with Alamofire
+
+- **Utilities** (`Core/Utils/`):
+  - `NetworkReachability`: Detects online/offline status for cache-first UX
+
+### Project Structure
 
 ```
 IMDUMB/
-├── Domain/                  # Business logic layer
-│   ├── Entities/           # Domain models (Movie, Actor, Category)
-│   ├── Repositories/       # Repository protocols
-│   └── UseCases/           # Use cases (GetCategories, GetMovieDetails, LoadConfiguration)
-├── Data/                   # Data layer
-│   ├── DTOs/              # Data Transfer Objects
-│   ├── DataStores/        # Data source implementations
-│   │   ├── RemoteMovieDataStore.swift
-│   │   ├── MockMovieDataStore.swift
-│   │   └── FirebaseConfigDataStore.swift
-│   └── Repositories/      # Repository implementations
-├── Presentation/          # UI layer
-│   ├── Splash/           # Splash screen (MVP)
-│   ├── Categories/       # Categories screen (MVP)
-│   ├── MovieDetail/      # Movie detail screen (MVP)
-│   └── Recommendation/   # Recommendation modal
-└── Core/                  # Shared utilities
-    ├── Network/           # Network service
-    ├── Protocols/         # Base protocols
-    └── Extensions/        # Utility extensions
+├── Domain/                          # 🎯 Business Logic (Pure Swift)
+│   ├── Entities/                   # Business models
+│   │   ├── Movie.swift
+│   │   ├── Actor.swift
+│   │   └── Category.swift
+│   ├── Repositories/               # Abstract data interfaces
+│   │   └── MovieRepositoryProtocol.swift
+│   └── UseCases/                   # Business operations
+│       ├── GetCategoriesUseCase.swift
+│       ├── GetMovieDetailsUseCase.swift
+│       └── LoadConfigurationUseCase.swift
+│
+├── Data/                            # 💾 Data Management
+│   ├── DTOs/                       # Data transfer objects
+│   │   ├── MovieDTO.swift
+│   │   ├── ActorDTO.swift
+│   │   ├── CachedDTOs.swift
+│   │   └── DTO+Mapping.swift       # DTO → Domain mapping
+│   ├── DataStores/                 # Data source implementations
+│   │   ├── MovieDataStoreProtocol.swift
+│   │   ├── RemoteMovieDataStore.swift    # Network (Alamofire)
+│   │   ├── LocalMovieDataStore.swift     # Cache (CoreData)
+│   │   ├── MockMovieDataStore.swift      # Testing
+│   │   └── FirebaseConfigDataStore.swift # Remote Config
+│   └── Repositories/               # Repository implementations
+│       └── MovieRepository.swift   # Cache-first + parallel fetching
+│
+├── Presentation/                    # 🎨 UI Layer (MVP Pattern)
+│   ├── Splash/
+│   │   ├── SplashViewController.swift     # View (XIB)
+│   │   ├── SplashPresenter.swift          # Presenter (RxSwift)
+│   │   └── SplashContracts.swift          # View/Presenter protocols
+│   ├── Categories/
+│   │   ├── CategoriesViewController.swift # View (XIB)
+│   │   ├── CategoriesPresenter.swift      # Presenter (RxSwift + offline detection)
+│   │   ├── CategoryCollectionViewCell.swift
+│   │   └── MovieTableViewCell.swift
+│   ├── MovieDetail/
+│   │   ├── MovieDetailViewController.swift
+│   │   └── MovieDetailPresenter.swift
+│   └── Recommendation/
+│       └── RecommendationViewController.swift
+│
+├── Core/                            # 🔧 Shared Infrastructure
+│   ├── Network/
+│   │   └── NetworkService.swift    # Alamofire HTTP client
+│   ├── Cache/
+│   │   ├── CacheServiceProtocol.swift
+│   │   ├── CoreDataCacheService.swift
+│   │   └── ImageCacheService.swift
+│   ├── Extensions/
+│   │   ├── UIViewController+Loading.swift
+│   │   ├── String+HTML.swift
+│   │   └── UIImageView+Alamofire.swift
+│   ├── Utils/
+│   │   └── NetworkReachability.swift
+│   └── Protocols/
+│       └── BaseViewProtocol.swift
+│
+└── Packages/                        # 📦 Swift Packages
+    └── IMDUMBPersistence/          # CoreData persistence module
+        ├── Sources/
+        │   └── IMDUMBPersistence/
+        │       ├── CoreDataModels.xcdatamodeld
+        │       ├── CacheService.swift
+        │       ├── MovieDTO.swift
+        │       └── ActorDTO.swift
+        └── Tests/
+```
+
+### Data Flow with RxSwift
+
+The application uses **RxSwift** for reactive, declarative data flow:
+
+```
+┌─────────────┐
+│    View     │  User taps "Load Movies"
+└──────┬──────┘
+       │ viewDidLoad()
+       ▼
+┌─────────────┐
+│  Presenter  │  getCategoriesUseCase.execute()
+└──────┬──────┘       .observe(on: MainScheduler.instance)
+       │              .subscribe(onSuccess: { view.display($0) })
+       │              .disposed(by: disposeBag)
+       ▼
+┌─────────────┐
+│   UseCase   │  repository.getCategories() → Single<[Category]>
+└──────┬──────┘       .map { $0.filter { !$0.movies.isEmpty } }
+       │
+       ▼
+┌─────────────┐
+│ Repository  │  1. Try cache: localDataStore.fetchMovies()
+└──────┬──────┘                   .catch { remoteDataStore.fetchMovies() }
+       │         2. Parallel fetch 4 categories: Single.zip(...)
+       │         3. Background refresh: .do(onSuccess: { refresh() })
+       │         4. Map DTOs → Domain: dtos.map { $0.toDomain() }
+       ▼
+┌─────────────┐
+│  DataStore  │  RemoteDataStore: Alamofire HTTP request → Single<[MovieDTO]>
+└──────┬──────┘  LocalDataStore:  CoreData fetch → Single<[MovieDTO]>
+       │
+       ▼
+┌─────────────┐
+│  Network /  │  TMDB API or CoreData
+│   Cache     │
+└─────────────┘
+
+Response flows back up through Single chain:
+MovieDTO[] → (mapping) → Movie[] → Category[] → View displays
+```
+
+### Reactive Patterns Used
+
+**1. Single for One-Time Operations:**
+```swift
+func getCategories() -> Single<[Category]> {
+    return repository.getCategories()
+        .map { categories in categories.filter { !$0.movies.isEmpty } }
+}
+```
+
+**2. Parallel Execution with Single.zip:**
+```swift
+let singles = [popular, topRated, upcoming, nowPlaying].map { endpoint in
+    dataStore.fetchMovies(endpoint: endpoint)
+}
+Single.zip(singles) // Runs all 4 fetches in parallel
+```
+
+**3. Cache-First with Fallback:**
+```swift
+localDataStore.fetchMovies(endpoint)
+    .do(onSuccess: { refreshInBackground() })  // Background refresh
+    .catch { remoteDataStore.fetchMovies(endpoint) }  // Fallback to network
+```
+
+**4. Thread-Safe UI Updates:**
+```swift
+useCase.execute()
+    .observe(on: MainScheduler.instance)  // Ensures UI updates on main thread
+    .subscribe(onSuccess: { view.display($0) })
+    .disposed(by: disposeBag)  // Auto-cleanup on deinit
+```
+
+**5. Non-Critical Operations:**
+```swift
+fetchMovieCredits(movieId)
+    .catchAndReturn([])  // Continue with empty array if credits fail
+```
+
+### Offline Support Flow
+
+```
+User opens app (offline)
+    ↓
+NetworkReachability.shared.isReachable → false
+    ↓
+Repository tries LocalDataStore first (cache-first)
+    ↓
+Cache hit → Returns cached data
+    ↓
+Presenter detects offline: if !isReachable { view.showToast("Offline") }
+    ↓
+View displays cached data + toast notification
+    ↓
+When online: Background refresh updates cache
 ```
 
 ## 🎯 SOLID Principles Implementation

@@ -1,4 +1,6 @@
 import XCTest
+import RxSwift
+import RxBlocking
 @testable import IMDUMB
 
 // MARK: - Mock Repository for Testing
@@ -6,16 +8,16 @@ class MockMovieRepository: MovieRepositoryProtocol {
     var shouldReturnError = false
     var mockCategories: [IMDUMB.Category] = []
 
-    func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
+    func getCategories() -> Single<[IMDUMB.Category]> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "TestError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "TestError", code: 1, userInfo: nil))
         } else {
-            completion(.success(mockCategories))
+            return Single.just(mockCategories)
         }
     }
 
-    func getMovieDetails(movieId: Int, completion: @escaping (Result<Movie, Error>) -> Void) {
-        completion(.failure(NSError(domain: "NotImplemented", code: 1, userInfo: nil)))
+    func getMovieDetails(movieId: Int) -> Single<Movie> {
+        return Single.error(NSError(domain: "NotImplemented", code: 1, userInfo: nil))
     }
 }
 
@@ -39,7 +41,7 @@ class GetCategoriesUseCaseTests: XCTestCase {
 
     // MARK: - Test Success Cases
 
-    func testExecute_WhenRepositoryReturnsCategories_ShouldReturnSuccess() {
+    func testExecute_WhenRepositoryReturnsCategories_ShouldReturnSuccess() throws {
         // Given
         let expectedMovie = Movie(
             id: 1,
@@ -55,74 +57,48 @@ class GetCategoriesUseCaseTests: XCTestCase {
         let expectedCategory = Category(id: "popular", name: "Popular", movies: [expectedMovie])
         mockRepository.mockCategories = [expectedCategory]
 
-        let expectation = self.expectation(description: "Categories returned")
-
         // When
-        sut.execute { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertEqual(categories.count, 1)
-                XCTAssertEqual(categories.first?.id, "popular")
-                XCTAssertEqual(categories.first?.name, "Popular")
-                XCTAssertEqual(categories.first?.movies.count, 1)
-                XCTAssertEqual(categories.first?.movies.first?.title, "Test Movie")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let categories = try sut.execute().toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(categories.count, 1)
+        XCTAssertEqual(categories.first?.id, "popular")
+        XCTAssertEqual(categories.first?.name, "Popular")
+        XCTAssertEqual(categories.first?.movies.count, 1)
+        XCTAssertEqual(categories.first?.movies.first?.title, "Test Movie")
     }
 
-    func testExecute_WhenRepositoryReturnsEmptyArray_ShouldReturnEmptySuccess() {
-        // Given
-        mockRepository.mockCategories = []
-
-        let expectation = self.expectation(description: "Empty categories returned")
+    func testExecute_WhenRepositoryReturnsEmptyArray_ShouldFilterEmptyCategories() throws {
+        // Given - Mix of empty and non-empty categories
+        let movie = Movie(id: 1, title: "Movie", overview: "Test", posterPath: nil, backdropPath: nil, voteAverage: 7.0, releaseDate: "2024-01-01", images: [], cast: [])
+        mockRepository.mockCategories = [
+            Category(id: "popular", name: "Popular", movies: [movie]),
+            Category(id: "empty", name: "Empty", movies: [])
+        ]
 
         // When
-        sut.execute { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertTrue(categories.isEmpty)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let categories = try sut.execute().toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then - Only non-empty categories returned
+        XCTAssertEqual(categories.count, 1)
+        XCTAssertEqual(categories.first?.id, "popular")
     }
 
     // MARK: - Test Failure Cases
 
-    func testExecute_WhenRepositoryReturnsError_ShouldReturnFailure() {
+    func testExecute_WhenRepositoryReturnsError_ShouldPropagateError() {
         // Given
         mockRepository.shouldReturnError = true
 
-        let expectation = self.expectation(description: "Error returned")
-
-        // When
-        sut.execute { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Expected failure but got success")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
+        // When/Then
+        XCTAssertThrowsError(try sut.execute().toBlocking().first()) { error in
+            XCTAssertNotNil(error)
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
     // MARK: - Test Multiple Categories
 
-    func testExecute_WhenRepositoryReturnsMultipleCategories_ShouldReturnAllCategories() {
+    func testExecute_WhenRepositoryReturnsMultipleCategories_ShouldReturnAllCategories() throws {
         // Given
         let movie1 = Movie(id: 1, title: "Movie 1", overview: "Overview 1", posterPath: nil, backdropPath: nil, voteAverage: 7.0, releaseDate: "2024-01-01", images: [], cast: [])
         let movie2 = Movie(id: 2, title: "Movie 2", overview: "Overview 2", posterPath: nil, backdropPath: nil, voteAverage: 8.0, releaseDate: "2024-01-02", images: [], cast: [])
@@ -132,22 +108,12 @@ class GetCategoriesUseCaseTests: XCTestCase {
 
         mockRepository.mockCategories = [category1, category2]
 
-        let expectation = self.expectation(description: "Multiple categories returned")
-
         // When
-        sut.execute { result in
-            // Then
-            switch result {
-            case .success(let categories):
-                XCTAssertEqual(categories.count, 2)
-                XCTAssertEqual(categories[0].id, "popular")
-                XCTAssertEqual(categories[1].id, "top_rated")
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Expected success but got failure")
-            }
-        }
+        let categories = try sut.execute().toBlocking().first()!
 
-        waitForExpectations(timeout: 1.0)
+        // Then
+        XCTAssertEqual(categories.count, 2)
+        XCTAssertEqual(categories[0].id, "popular")
+        XCTAssertEqual(categories[1].id, "top_rated")
     }
 }

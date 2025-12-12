@@ -1,4 +1,6 @@
 import XCTest
+import RxSwift
+import RxBlocking
 @testable import IMDUMB
 
 // MARK: - Mock View for Presenter Tests
@@ -7,7 +9,9 @@ class MockCategoriesView: CategoriesViewProtocol {
     var showLoadingCalled = false
     var hideLoadingCalled = false
     var showErrorCalled = false
+    var showToastCalled = false
     var errorMessage: String?
+    var toastMessage: String?
     var displayedCategories: [IMDUMB.Category]?
 
     func displayCategories(_ categories: [IMDUMB.Category]) {
@@ -27,6 +31,11 @@ class MockCategoriesView: CategoriesViewProtocol {
         showErrorCalled = true
         errorMessage = message
     }
+
+    func showToast(_ message: String) {
+        showToastCalled = true
+        toastMessage = message
+    }
 }
 
 // MARK: - Mock Use Case for Presenter Tests
@@ -37,11 +46,11 @@ class MockGetCategoriesUseCase: GetCategoriesUseCase {
     // Mock repository to satisfy parent initializer
     private class MockRepository: MovieRepositoryProtocol {
         var categories: [IMDUMB.Category] = []
-        func getCategories(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
-            completion(.success(categories))
+        func getCategories() -> Single<[IMDUMB.Category]> {
+            return Single.just(categories)
         }
-        func getMovieDetails(movieId: Int, completion: @escaping (Result<Movie, Error>) -> Void) {
-            completion(.failure(NSError(domain: "NotImplemented", code: 1, userInfo: nil)))
+        func getMovieDetails(movieId: Int) -> Single<Movie> {
+            return Single.error(NSError(domain: "NotImplemented", code: 1, userInfo: nil))
         }
     }
 
@@ -49,11 +58,11 @@ class MockGetCategoriesUseCase: GetCategoriesUseCase {
         super.init(repository: MockRepository())
     }
 
-    override func execute(completion: @escaping (Result<[IMDUMB.Category], Error>) -> Void) {
+    override func execute() -> Single<[IMDUMB.Category]> {
         if shouldReturnError {
-            completion(.failure(NSError(domain: "UseCaseError", code: 1, userInfo: nil)))
+            return Single.error(NSError(domain: "UseCaseError", code: 1, userInfo: nil))
         } else {
-            completion(.success(mockCategories))
+            return Single.just(mockCategories)
         }
     }
 }
@@ -100,9 +109,9 @@ class CategoriesPresenterTests: XCTestCase {
         // When
         sut.viewDidLoad()
 
-        // Give async operation time to complete
+        // Give RxSwift MainScheduler time to complete
         let expectation = self.expectation(description: "Categories loaded")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1.0)
@@ -122,9 +131,9 @@ class CategoriesPresenterTests: XCTestCase {
         // When
         sut.viewDidLoad()
 
-        // Give async operation time to complete
+        // Give RxSwift MainScheduler time to complete
         let expectation = self.expectation(description: "Error shown")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1.0)
@@ -143,9 +152,9 @@ class CategoriesPresenterTests: XCTestCase {
         // When
         sut.viewDidLoad()
 
-        // Give async operation time to complete
+        // Give RxSwift MainScheduler time to complete
         let expectation = self.expectation(description: "Empty categories displayed")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1.0)
@@ -171,9 +180,9 @@ class CategoriesPresenterTests: XCTestCase {
         // When
         sut.viewDidLoad()
 
-        // Give async operation time to complete
+        // Give RxSwift MainScheduler time to complete
         let expectation = self.expectation(description: "Multiple categories displayed")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1.0)
