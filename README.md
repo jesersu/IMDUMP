@@ -4,8 +4,6 @@
 [![Build](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml/badge.svg)](https://github.com/jesersu/IMDUMP/actions/workflows/build.yml)
 
 IMDUMB es una aplicación iOS que muestra categorías y detalles de películas, construida con el patrón **MVP + Arquitectura Limpia**. La aplicación demuestra prácticas profesionales de desarrollo iOS incluyendo una adecuada separación de responsabilidades, principios SOLID, diseño de interfaz con UIKit y archivos XIB, **gestión encriptada de secretos con Arkana**, e **integración continua/despliegue con Fastlane y GitHub Actions**.
-
- - [Video rapido explicativo](https://youtu.be/9EaVBrL78RA)
    
 ## 🔐 Características de Seguridad
 
